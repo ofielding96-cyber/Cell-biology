@@ -1,0 +1,1705 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cell Biology Learning Hub | GCSE Biology</title>
+<style>
+:root{
+  --navy:#0f2942;
+  --navy-2:#173a5e;
+  --teal:#0e7c86;
+  --teal-light:#e6f5f6;
+  --amber:#e0972a;
+  --amber-light:#fdf1e0;
+  --green:#2f9e5b;
+  --red:#c8402f;
+  --grey-bg:#f4f6f8;
+  --card:#ffffff;
+  --text:#1c2733;
+  --text-light:#5b6b7a;
+  --border:#dde4ea;
+  --radius:14px;
+  --shadow:0 2px 10px rgba(15,41,66,0.08);
+  --shadow-lg:0 8px 30px rgba(15,41,66,0.14);
+  font-size:16px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--grey-bg);
+  color:var(--text);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--navy);margin-top:0;}
+h2{font-size:1.55rem;border-bottom:3px solid var(--amber);display:inline-block;padding-bottom:4px;}
+h3{font-size:1.18rem;color:var(--teal);}
+p{margin:0.5em 0;}
+a{color:var(--teal);}
+button{font-family:inherit;cursor:pointer;}
+.es{color:#8a4b00;background:var(--amber-light);border-radius:6px;padding:0 4px;}
+body.hide-es .es{display:none !important;}
+body.hide-es .es-block{display:none !important;}
+
+/* ---------- Layout ---------- */
+#app{display:flex;min-height:100vh;}
+#sidebar{
+  width:250px;flex:0 0 250px;background:var(--navy);color:#fff;
+  position:fixed;top:0;left:0;height:100vh;overflow-y:auto;
+  transition:transform .25s ease;z-index:50;
+}
+#sidebar .brand{padding:20px 18px 10px;font-weight:700;font-size:1.15rem;border-bottom:1px solid rgba(255,255,255,.12);}
+#sidebar .brand small{display:block;font-weight:400;font-size:.72rem;color:#b9c9d8;margin-top:3px;}
+#navlist{list-style:none;margin:0;padding:10px 0 20px;}
+#navlist li{margin:0;}
+#navlist button{
+  width:100%;text-align:left;background:none;border:none;color:#cfe0ec;
+  padding:10px 18px;font-size:.92rem;display:flex;gap:10px;align-items:center;
+  border-left:3px solid transparent;
+}
+#navlist button .num{
+  background:rgba(255,255,255,.12);border-radius:50%;width:22px;height:22px;
+  display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;flex:0 0 22px;
+}
+#navlist button:hover{background:rgba(255,255,255,.08);color:#fff;}
+#navlist button.active{background:var(--navy-2);color:#fff;border-left-color:var(--amber);font-weight:600;}
+#navlist button.done .num{background:var(--green);color:#fff;}
+#navlist .navgroup-label{padding:14px 18px 4px;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:#7d93a6;}
+
+#mainwrap{flex:1;margin-left:250px;min-height:100vh;display:flex;flex-direction:column;}
+#topbar{
+  background:#fff;border-bottom:1px solid var(--border);padding:12px 22px;
+  display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:40;box-shadow:var(--shadow);
+}
+#menuBtn{display:none;background:var(--navy);color:#fff;border:none;border-radius:8px;width:38px;height:38px;font-size:1.1rem;}
+#topbar .title{font-weight:700;color:var(--navy);flex:1;font-size:1.05rem;}
+#langToggle{
+  background:var(--teal-light);color:var(--navy);border:1.5px solid var(--teal);border-radius:20px;
+  padding:8px 14px;font-weight:600;font-size:.85rem;display:flex;align-items:center;gap:6px;
+}
+#langToggle.off{background:#eee;color:#888;border-color:#ccc;}
+#progressPill{
+  background:var(--amber-light);color:#7a4a00;border-radius:20px;padding:8px 12px;font-size:.8rem;font-weight:600;
+  white-space:nowrap;
+}
+main{padding:26px 30px 70px;max-width:980px;width:100%;margin:0 auto;flex:1;}
+
+.topic,.panel{display:none;}
+.topic.active,.panel.active{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ---------- Cards / components ---------- */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;margin:16px 0;box-shadow:var(--shadow);}
+.concept{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--teal);border-radius:10px;padding:16px 20px;margin:14px 0;}
+.concept h3{margin-bottom:6px;}
+.concept .term-es{font-weight:600;color:#8a4b00;}
+.examlang{background:var(--amber-light);border:1px dashed var(--amber);border-radius:10px;padding:12px 16px;margin:12px 0;font-size:.92rem;}
+.examlang b{color:#8a4b00;}
+.scaffold{background:var(--navy);color:#fff;border-radius:10px;padding:10px 16px;margin:8px 0;font-family:Consolas,monospace;font-size:.88rem;}
+.keywordbox{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;}
+.keywordbox span{background:var(--teal-light);color:var(--teal);border-radius:16px;padding:4px 12px;font-size:.82rem;font-weight:600;}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:720px){.grid2{grid-template-columns:1fr;}}
+
+.btn{
+  background:var(--teal);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:600;font-size:.9rem;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.btn:hover{background:var(--navy-2);}
+.btn.secondary{background:#fff;color:var(--teal);border:1.5px solid var(--teal);}
+.btn.secondary:hover{background:var(--teal-light);}
+.btn.small{padding:5px 11px;font-size:.78rem;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+
+.badge{display:inline-block;border-radius:20px;padding:3px 12px;font-size:.75rem;font-weight:700;}
+.badge.plant{background:#e4f5e8;color:var(--green);}
+.badge.animal{background:#fde9e7;color:var(--red);}
+.badge.pro{background:#eee6fb;color:#6b3fa0;}
+.badge.euk{background:#e6f0fb;color:#2059a8;}
+
+.reveal-btn{background:none;border:1.5px solid var(--teal);color:var(--teal);border-radius:8px;padding:6px 14px;font-size:.85rem;font-weight:600;}
+.reveal-box{display:none;margin-top:10px;background:var(--teal-light);border-radius:8px;padding:12px 14px;}
+.reveal-box.open{display:block;}
+
+.progressbar-outer{background:#e6ebf0;border-radius:20px;height:10px;overflow:hidden;margin:4px 0;}
+.progressbar-inner{background:linear-gradient(90deg,var(--teal),var(--green));height:100%;width:0%;transition:width .4s;}
+
+/* Home dashboard */
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;margin-top:18px;}
+.dash-card{
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;cursor:pointer;
+  box-shadow:var(--shadow);transition:transform .15s, box-shadow .15s;position:relative;
+}
+.dash-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);}
+.dash-card .icon{font-size:1.6rem;}
+.dash-card h4{margin:8px 0 4px;font-size:1rem;color:var(--navy);}
+.dash-card p{font-size:.8rem;color:var(--text-light);margin:0;}
+.dash-card .check{position:absolute;top:12px;right:12px;color:var(--green);font-weight:700;display:none;}
+.dash-card.done .check{display:inline;}
+
+/* Quiz / MCQ */
+.quiz-q{border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:12px 0;background:#fff;}
+.quiz-q .qtext{font-weight:600;margin-bottom:10px;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{
+  text-align:left;border:1.5px solid var(--border);background:#fff;border-radius:8px;padding:9px 12px;font-size:.92rem;
+}
+.quiz-opt:hover{border-color:var(--teal);}
+.quiz-opt.correct{border-color:var(--green);background:#e9f8ee;}
+.quiz-opt.incorrect{border-color:var(--red);background:#fdecea;}
+.quiz-opt.disabled{pointer-events:none;}
+.feedback{margin-top:10px;padding:10px 12px;border-radius:8px;font-size:.88rem;display:none;}
+.feedback.show{display:block;}
+.feedback.good{background:#e9f8ee;color:#1d6b3c;}
+.feedback.bad{background:#fdecea;color:#93231a;}
+
+/* Order activity */
+.order-pool{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;}
+.order-pool button{border:1.5px solid var(--teal);background:#fff;color:var(--teal);border-radius:8px;padding:8px 12px;font-size:.85rem;}
+.order-pool button:disabled{opacity:.35;}
+.order-slots{display:flex;flex-direction:column;gap:6px;margin:10px 0;}
+.order-slot{border:2px dashed var(--border);border-radius:8px;padding:8px 12px;min-height:20px;font-size:.9rem;background:#fbfbfb;display:flex;justify-content:space-between;align-items:center;}
+.order-slot.filled{border-style:solid;border-color:var(--teal);background:var(--teal-light);}
+.order-slot.correct{border-color:var(--green);background:#e9f8ee;}
+.order-slot.incorrect{border-color:var(--red);background:#fdecea;}
+.order-slot button{background:none;border:none;color:var(--red);font-weight:700;font-size:.9rem;}
+
+/* Flashcards */
+.flashwrap{max-width:420px;margin:16px auto;}
+.flashcard{
+  height:170px;border-radius:14px;position:relative;perspective:1000px;cursor:pointer;
+}
+.flashcard .face{
+  position:absolute;inset:0;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:16px;backface-visibility:hidden;transition:transform .5s;font-weight:600;
+}
+.flashcard .front{background:var(--navy);color:#fff;font-size:1.15rem;}
+.flashcard .back{background:var(--teal-light);color:var(--navy);transform:rotateY(180deg);font-size:.95rem;font-weight:400;}
+.flashcard.flipped .front{transform:rotateY(180deg);}
+.flashcard.flipped .back{transform:rotateY(360deg);}
+.flashnav{display:flex;justify-content:space-between;align-items:center;margin-top:10px;}
+
+/* Glossary */
+#glossSearch{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:.95rem;margin-bottom:14px;}
+.gloss-table{width:100%;border-collapse:collapse;font-size:.9rem;}
+.gloss-table th,.gloss-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);}
+.gloss-table th{color:var(--navy);}
+
+/* Sliders/tools */
+.tool-box{background:#fbfcfd;border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:14px 0;}
+.tool-box label{font-size:.85rem;font-weight:600;color:var(--navy);}
+input[type=range]{width:100%;}
+.stat-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;}
+.stat{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 16px;min-width:110px;text-align:center;}
+.stat .val{font-size:1.35rem;font-weight:700;color:var(--teal);}
+.stat .lab{font-size:.72rem;color:var(--text-light);text-transform:uppercase;}
+input[type=text],input[type=number]{padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.92rem;}
+
+.svgcell{max-width:100%;height:auto;}
+.hotspot-row{display:flex;align-items:center;gap:10px;margin:6px 0;flex-wrap:wrap;}
+.hotspot-row .tag{background:var(--navy);color:#fff;border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex:0 0 26px;}
+select{padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;}
+
+.sort-buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:10px 0;}
+.bucket{border:2px dashed var(--border);border-radius:10px;min-height:60px;padding:8px;font-size:.8rem;}
+.bucket h5{margin:0 0 6px;font-size:.8rem;color:var(--navy);text-align:center;}
+.chip{display:inline-block;background:#fff;border:1px solid var(--border);border-radius:16px;padding:4px 10px;margin:3px;font-size:.78rem;}
+
+footer{text-align:center;color:var(--text-light);font-size:.78rem;padding:20px;}
+
+/* Final assessment breakdown */
+.breakdown-row{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:.85rem;}
+.breakdown-row .label{width:150px;flex:0 0 150px;color:var(--navy);font-weight:600;}
+.breakdown-row .bar-outer{flex:1;background:#e6ebf0;border-radius:10px;height:16px;overflow:hidden;}
+.breakdown-row .bar-inner{height:100%;background:linear-gradient(90deg,var(--teal),var(--green));}
+.breakdown-row .pct{width:44px;text-align:right;font-weight:700;color:var(--navy);}
+
+.hidden{display:none !important;}
+@media(max-width:900px){
+  #sidebar{transform:translateX(-100%);}
+  #sidebar.open{transform:translateX(0);}
+  #mainwrap{margin-left:0;}
+  #menuBtn{display:inline-flex;align-items:center;justify-content:center;}
+  main{padding:18px 16px 60px;}
+}
+@media(max-width:600px){
+  #topbar{padding:10px 12px;gap:8px;flex-wrap:wrap;}
+  #topTitle{display:none;}
+  #progressPill{font-size:.7rem;padding:6px 9px;order:2;}
+  #langToggle{font-size:.72rem;padding:6px 10px;order:3;margin-left:auto;}
+  #menuBtn{order:1;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <nav id="sidebar">
+    <div class="brand">🧬 Cell Biology Hub<small>GCSE Biology · Bilingual EN/ES</small></div>
+    <ul id="navlist">
+      <li><button class="navbtn" data-target="home"><span class="num">🏠</span> Home / Dashboard</button></li>
+      <li class="navgroup-label">Topic Sections</li>
+      <li><button class="navbtn" data-target="sec1"><span class="num">1</span> Plant &amp; Animal Cells</button></li>
+      <li><button class="navbtn" data-target="sec2"><span class="num">2</span> Prokaryotic Cells</button></li>
+      <li><button class="navbtn" data-target="sec3"><span class="num">3</span> Magnification &amp; Units</button></li>
+      <li><button class="navbtn" data-target="sec4"><span class="num">4</span> Microscopy</button></li>
+      <li><button class="navbtn" data-target="sec5"><span class="num">5</span> RP: Microscopy</button></li>
+      <li><button class="navbtn" data-target="sec6"><span class="num">6</span> DNA, Chromosomes &amp; Genes</button></li>
+      <li><button class="navbtn" data-target="sec7"><span class="num">7</span> Cell Cycle &amp; Mitosis</button></li>
+      <li><button class="navbtn" data-target="sec8"><span class="num">8</span> Diffusion</button></li>
+      <li><button class="navbtn" data-target="sec9"><span class="num">9</span> Surface Area : Volume</button></li>
+      <li><button class="navbtn" data-target="sec10"><span class="num">10</span> Osmosis</button></li>
+      <li><button class="navbtn" data-target="sec11"><span class="num">11</span> RP: Osmosis</button></li>
+      <li><button class="navbtn" data-target="sec12"><span class="num">12</span> Active Transport</button></li>
+      <li class="navgroup-label">Extra</li>
+      <li><button class="navbtn" data-target="glossary"><span class="num">📖</span> Glossary EN↔ES</button></li>
+      <li><button class="navbtn" data-target="final"><span class="num">🏆</span> End-of-Topic Challenge</button></li>
+    </ul>
+  </nav>
+
+  <div id="mainwrap">
+    <div id="topbar">
+      <button id="menuBtn" aria-label="Open menu">☰</button>
+      <div class="title" id="topTitle">Cell Biology Learning Hub</div>
+      <div id="progressPill">Progress: 0%</div>
+      <button id="langToggle">🇬🇧 English &nbsp;+&nbsp; 🇪🇸 Spanish</button>
+    </div>
+
+    <main>
+
+      <!-- ============ HOME ============ -->
+      <section class="panel active" id="home">
+        <h2>Cell Biology Learning Hub</h2>
+        <p class="es-block es">Centro de aprendizaje de Biología Celular</p>
+        <p>Welcome! This hub covers everything in your <b>AQA GCSE Biology — Cell Biology</b> topic. Use it to learn new ideas, catch up on missed lessons, revise, and practise exam skills. Work through the sections in order, or jump straight to the topic you need.</p>
+        <p class="es">¡Bienvenido! Este recurso cubre todo el tema de <b>Biología Celular</b>. Puedes aprender, repasar o practicar destrezas de examen. Usa el botón de arriba a la derecha para mostrar u ocultar el apoyo en español en cualquier momento.</p>
+        <div class="card" style="background:var(--teal-light);border:none;">
+          <b>How to use this site:</b>
+          <ol style="margin:8px 0 0 18px;padding:0;">
+            <li>Read each concept box — English first, with an optional Spanish explanation underneath.</li>
+            <li>Try every interactive activity — they check your answers instantly and explain mistakes.</li>
+            <li>Use the <b>🇬🇧/🇪🇸 toggle</b> at the top to show or hide Spanish support at any time.</li>
+            <li>Finish with the <b>End-of-Topic Challenge</b> (25 questions) to see your final score and which topics to revisit.</li>
+          </ol>
+        </div>
+        <h3 style="margin-top:26px;">Your progress</h3>
+        <div class="progressbar-outer"><div class="progressbar-inner" id="homeProgressBar"></div></div>
+        <p id="homeProgressText" style="font-size:.85rem;color:var(--text-light);">0 of 12 sections visited</p>
+
+        <div class="dash-grid" id="dashGrid">
+          <!-- filled by JS -->
+        </div>
+      </section>
+      <!-- ============ SECTION 1: PLANT & ANIMAL CELLS ============ -->
+      <section class="topic" id="sec1">
+        <h2>1. Plant and Animal Cells <span class="es">· Células animales y vegetales</span></h2>
+
+        <div class="concept">
+          <h3>CELL <span class="es term-es">· Célula</span></h3>
+          <p><b>English:</b> A cell is the smallest living part of an organism — the basic building block of all life. Some organisms are made of just one cell (e.g. bacteria); others, like plants and animals, are made of many billions of cells.</p>
+          <p class="es"><b>Español:</b> Una célula es la parte viva más pequeña de un organismo, el bloque básico de la vida. Algunos organismos tienen una sola célula; otros, como las plantas y los animales, tienen miles de millones.</p>
+        </div>
+
+        <div class="concept">
+          <h3>EUKARYOTIC CELL <span class="es term-es">· Célula eucariota</span></h3>
+          <p><b>English:</b> A cell that contains its DNA enclosed inside a <b>nucleus</b>. Animal and plant cells are both eukaryotic cells.</p>
+          <p class="es"><b>Español:</b> Una célula cuyo ADN está encerrado dentro de un <b>núcleo</b>. Las células animales y vegetales son eucariotas.</p>
+          <div class="examlang"><b>KEY EXAM LANGUAGE:</b> nucleus &nbsp;·&nbsp; contains DNA &nbsp;·&nbsp; membrane-bound</div>
+        </div>
+
+        <h3>Sub-cellular structures (organelles) and their functions</h3>
+        <p>All cells contain smaller structures called <b>organelles</b> that each carry out a specific job. Plant cells have three extra organelles that animal cells do not have.</p>
+        <div class="card" style="overflow-x:auto;">
+        <table class="gloss-table">
+          <tr><th>Organelle</th><th>Found in</th><th>Function</th></tr>
+          <tr><td><b>Nucleus</b> <span class="es">· Núcleo</span></td><td><span class="badge animal">Animal</span> <span class="badge plant">Plant</span></td><td>Controls all the activities of the cell — contains the DNA.</td></tr>
+          <tr><td><b>Cytoplasm</b> <span class="es">· Citoplasma</span></td><td><span class="badge animal">Animal</span> <span class="badge plant">Plant</span></td><td>Gel-like substance where most chemical reactions take place.</td></tr>
+          <tr><td><b>Cell membrane</b> <span class="es">· Membrana celular</span></td><td><span class="badge animal">Animal</span> <span class="badge plant">Plant</span></td><td>Controls what substances move into and out of the cell.</td></tr>
+          <tr><td><b>Mitochondria</b> <span class="es">· Mitocondrias</span></td><td><span class="badge animal">Animal</span> <span class="badge plant">Plant</span></td><td>Site of <b>aerobic respiration</b> — releases energy the cell can use.</td></tr>
+          <tr><td><b>Ribosomes</b> <span class="es">· Ribosomas</span></td><td><span class="badge animal">Animal</span> <span class="badge plant">Plant</span></td><td>Site of <b>protein synthesis</b> (where proteins are made).</td></tr>
+          <tr><td><b>Cell wall</b> <span class="es">· Pared celular</span></td><td><span class="badge plant">Plant only</span></td><td>Made of <b>cellulose</b>. Strengthens the cell and supports it.</td></tr>
+          <tr><td><b>Chloroplasts</b> <span class="es">· Cloroplastos</span></td><td><span class="badge plant">Plant only</span></td><td>Contain <b>chlorophyll</b>, which absorbs light energy for photosynthesis.</td></tr>
+          <tr><td><b>Permanent vacuole</b> <span class="es">· Vacuola permanente</span></td><td><span class="badge plant">Plant only</span></td><td>Contains cell <b>sap</b> (water + sugars/salts); keeps the cell rigid for support.</td></tr>
+        </table>
+        </div>
+        <div class="examlang"><b>KEY EXAM LANGUAGE:</b> "state the function of..." = give a short factual sentence starting with a verb, e.g. <i>"controls...", "releases...", "absorbs..."</i></div>
+
+        <h3>Similarities and differences: plant vs animal cells</h3>
+        <div class="grid2">
+          <div class="card"><b>Similarities</b><p>Both have a nucleus, cytoplasm, cell membrane, mitochondria and ribosomes.</p></div>
+          <div class="card"><b>Differences</b><p>Plant cells <i>also</i> have a cell wall, chloroplasts and a permanent vacuole. Animal cells do not have any of these three.</p></div>
+        </div>
+        <div class="scaffold">"Unlike animal cells, plant cells have ______, ______ and ______ because they need to ______."</div>
+        <p class="es">"A diferencia de las células animales, las células vegetales tienen ______, ______ y ______ porque necesitan ______."</p>
+
+        <h3>🔬 Interactive activity: Label the cells</h3>
+        <p>Choose the correct organelle name for each numbered label, then press <b>Check my answers</b>.</p>
+
+        <div class="tool-box">
+          <b>Animal cell</b>
+          <svg class="svgcell" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" style="max-width:340px;display:block;margin:10px auto;">
+            <ellipse cx="160" cy="110" rx="140" ry="95" fill="#fde8e6" stroke="#c8402f" stroke-width="3"/>
+            <circle cx="120" cy="100" r="42" fill="#f7c1bb" stroke="#c8402f" stroke-width="2"/>
+            <circle cx="120" cy="100" r="14" fill="#c8402f" opacity=".4"/>
+            <ellipse cx="215" cy="85" rx="20" ry="11" fill="#f5a35a" stroke="#a85b12" stroke-width="1.5" transform="rotate(20 215 85)"/>
+            <ellipse cx="230" cy="130" rx="20" ry="11" fill="#f5a35a" stroke="#a85b12" stroke-width="1.5" transform="rotate(-10 230 130)"/>
+            <circle cx="190" cy="150" r="3" fill="#555"/><circle cx="200" cy="155" r="3" fill="#555"/><circle cx="180" cy="160" r="3" fill="#555"/>
+            <text x="120" y="103" font-size="11" text-anchor="middle" fill="#7a1810" font-weight="700">1</text>
+            <text x="70" y="150" font-size="11" text-anchor="middle" fill="#7a1810" font-weight="700">2</text>
+            <text x="215" y="70" font-size="11" text-anchor="middle" fill="#7a1810" font-weight="700">3</text>
+            <text x="290" y="60" font-size="11" text-anchor="middle" fill="#7a1810" font-weight="700">4</text>
+            <text x="185" y="170" font-size="11" text-anchor="middle" fill="#7a1810" font-weight="700">5</text>
+          </svg>
+          <div id="animalLabelRows"></div>
+          <button class="btn small" id="checkAnimalLabels">Check my answers</button>
+          <span id="animalLabelScore" style="margin-left:10px;font-weight:700;"></span>
+        </div>
+
+        <div class="tool-box">
+          <b>Plant cell</b>
+          <svg class="svgcell" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" style="max-width:340px;display:block;margin:10px auto;">
+            <rect x="15" y="15" width="290" height="190" rx="18" fill="#eaf7ee" stroke="#2f9e5b" stroke-width="4"/>
+            <rect x="27" y="27" width="266" height="166" rx="14" fill="#f4fbf6" stroke="#5cb583" stroke-width="2"/>
+            <ellipse cx="180" cy="110" rx="95" ry="65" fill="#dff3e5" opacity=".6"/>
+            <circle cx="95" cy="80" r="34" fill="#f7c1bb" stroke="#c8402f" stroke-width="2"/>
+            <circle cx="95" cy="80" r="11" fill="#c8402f" opacity=".4"/>
+            <ellipse cx="200" cy="130" rx="70" ry="45" fill="#cfe9f7" stroke="#2b7fb0" stroke-width="2"/>
+            <ellipse cx="160" cy="70" rx="16" ry="9" fill="#3f9d4f" transform="rotate(15 160 70)"/>
+            <ellipse cx="230" cy="60" rx="16" ry="9" fill="#3f9d4f" transform="rotate(-10 230 60)"/>
+            <ellipse cx="245" cy="95" rx="14" ry="8" fill="#f5a35a" stroke="#a85b12" stroke-width="1.2"/>
+            <text x="95" y="83" font-size="11" text-anchor="middle" fill="#7a1810" font-weight="700">1</text>
+            <text x="200" y="133" font-size="11" text-anchor="middle" fill="#0d4a63" font-weight="700">2</text>
+            <text x="160" y="60" font-size="11" text-anchor="middle" fill="#155c22" font-weight="700">3</text>
+            <text x="20" y="35" font-size="11" text-anchor="middle" fill="#155c22" font-weight="700">4</text>
+            <text x="245" y="85" font-size="11" text-anchor="middle" fill="#7a1810" font-weight="700">5</text>
+          </svg>
+          <div id="plantLabelRows"></div>
+          <button class="btn small" id="checkPlantLabels">Check my answers</button>
+          <span id="plantLabelScore" style="margin-left:10px;font-weight:700;"></span>
+        </div>
+
+        <h3>✅ Quick check questions</h3>
+        <div id="quiz-sec1"></div>
+      </section>
+
+      <!-- ============ SECTION 2: PROKARYOTIC CELLS ============ -->
+      <section class="topic" id="sec2">
+        <h2>2. Prokaryotic Cells <span class="es">· Células procariotas</span></h2>
+
+        <div class="concept">
+          <h3>PROKARYOTE <span class="es term-es">· Procariota</span></h3>
+          <p><b>English:</b> A prokaryotic cell is much <b>smaller</b> than a eukaryotic cell and does <b>not have a nucleus</b>. Its genetic material (DNA) is found free in the cytoplasm. Bacteria are prokaryotic organisms.</p>
+          <p class="es"><b>Español:</b> Una célula procariota es mucho más pequeña que una eucariota y <b>no tiene núcleo</b>. Su ADN se encuentra libre en el citoplasma. Las bacterias son organismos procariotas.</p>
+          <div class="examlang"><b>KEY EXAM LANGUAGE:</b> no nucleus &nbsp;·&nbsp; genetic material in the cytoplasm &nbsp;·&nbsp; much smaller</div>
+        </div>
+
+        <h3>Comparing eukaryotes and prokaryotes</h3>
+        <div class="card" style="overflow-x:auto;">
+        <table class="gloss-table">
+          <tr><th>Feature</th><th><span class="badge euk">Eukaryotic</span> (plant/animal)</th><th><span class="badge pro">Prokaryotic</span> (bacteria)</th></tr>
+          <tr><td>Nucleus</td><td>Yes</td><td>No</td></tr>
+          <tr><td>DNA</td><td>Linear, in chromosomes, inside the nucleus</td><td>One circular loop of DNA, free in the cytoplasm</td></tr>
+          <tr><td>Plasmids <span class="es">· Plásmidos</span></td><td>None</td><td>Extra small rings of DNA carrying useful genes</td></tr>
+          <tr><td>Ribosomes, cytoplasm, cell membrane</td><td>Yes</td><td>Yes (but no other organelles)</td></tr>
+          <tr><td>Cell wall</td><td>Plant only — made of <b>cellulose</b></td><td>Yes — <i>not</i> made of cellulose</td></tr>
+          <tr><td>Flagellum <span class="es">· Flagelo</span></td><td>—</td><td>Some bacteria have one — helps the cell swim/move</td></tr>
+          <tr><td>Capsule <span class="es">· Cápsula</span></td><td>—</td><td>Some bacteria have a slime capsule for protection</td></tr>
+        </table>
+        </div>
+
+        <div class="card" style="background:var(--teal-light);border:none;">
+          <b>Sentence scaffold for comparisons:</b>
+          <div class="scaffold">"Unlike eukaryotic cells, prokaryotic cells do not have a ______. Instead, their DNA is found ______."</div>
+          <p class="es">"A diferencia de las células eucariotas, las procariotas no tienen ______. En cambio, su ADN se encuentra ______."</p>
+        </div>
+
+        <h3>🔬 Interactive activity: Eukaryote or Prokaryote?</h3>
+        <p>Click each statement, then choose which type of cell it describes.</p>
+        <div id="sortEukPro"></div>
+
+        <h3>✅ Quick check questions</h3>
+        <div id="quiz-sec2"></div>
+      </section>
+      <!-- ============ SECTION 3: MAGNIFICATION & UNITS ============ -->
+      <section class="topic" id="sec3">
+        <h2>3. Magnification and Units <span class="es">· Aumento y unidades</span></h2>
+
+        <div class="concept">
+          <h3>MAGNIFICATION <span class="es term-es">· Aumento</span></h3>
+          <p><b>English:</b> Magnification means making an image look <b>bigger</b> than the real (actual) object. Cells are too small to see with the naked eye, so scientists use microscopes to magnify them.</p>
+          <p class="es"><b>Español:</b> El aumento significa hacer que una imagen se vea <b>más grande</b> que el objeto real. Las células son demasiado pequeñas para verlas a simple vista, así que los científicos usan microscopios.</p>
+        </div>
+
+        <div class="card">
+          <b>The magnification triangle</b>
+          <p>Image size (I), Actual size (A) and Magnification (M) are linked by this equation:</p>
+          <p style="text-align:center;font-size:1.3rem;font-weight:700;color:var(--navy);">Magnification = Image size ÷ Actual size</p>
+          <p>Rearranged, this also gives:</p>
+          <p style="text-align:center;font-weight:700;color:var(--navy);">Image size = Actual size × Magnification &nbsp;&nbsp;|&nbsp;&nbsp; Actual size = Image size ÷ Magnification</p>
+          <div class="examlang"><b>KEY EXAM LANGUAGE:</b> "calculate" = show your working with numbers &nbsp;·&nbsp; always give a unit in your final answer</div>
+        </div>
+
+        <h3>Units and conversions</h3>
+        <table class="gloss-table">
+          <tr><th>Size of object</th><th>Unit used</th><th>Example</th></tr>
+          <tr><td>Large objects</td><td>metres (m)</td><td>Field, height of a person</td></tr>
+          <tr><td>Small objects</td><td>centimetres (cm) / millimetres (mm)</td><td>Small organisms, seeds</td></tr>
+          <tr><td>Tiny objects</td><td>micrometres (μm) / nanometres (nm)</td><td>Cells, organelles, microbes</td></tr>
+        </table>
+        <div class="card" style="background:var(--teal-light);border:none;">
+          <b>Conversion ladder (learn this!):</b>
+          <p style="font-size:1.05rem;font-weight:700;text-align:center;">1 mm = 1,000 μm &nbsp;&nbsp;·&nbsp;&nbsp; 1 μm = 1,000 nm &nbsp;&nbsp;·&nbsp;&nbsp; 1 mm = 1,000,000 nm</p>
+          <p>To go <b>mm → μm</b>, multiply by 1000. To go <b>μm → mm</b>, divide by 1000. Always convert to the same unit <i>before</i> you calculate!</p>
+        </div>
+
+        <h3>🧮 Interactive calculation tutor</h3>
+        <p>Work through each question in five guided steps: (1) what is being asked, (2) identify M, I, A, (3) convert units, (4) choose the equation, (5) calculate.</p>
+        <div class="tool-box" id="magTutor"></div>
+
+        <h3>📝 Practice questions (increasing difficulty)</h3>
+        <div id="magPractice"></div>
+      </section>
+
+      <!-- ============ SECTION 4: MICROSCOPY ============ -->
+      <section class="topic" id="sec4">
+        <h2>4. Microscopy <span class="es">· Microscopía</span></h2>
+
+        <div class="concept">
+          <h3>Why do we use microscopes? <span class="es term-es">· ¿Por qué usamos microscopios?</span></h3>
+          <p><b>English:</b> Cells and their organelles are far too small to see with the naked eye. Microscopes magnify specimens so scientists can study their structure.</p>
+          <p class="es"><b>Español:</b> Las células y sus orgánulos son demasiado pequeños para verlos a simple vista. Los microscopios aumentan las muestras para poder estudiar su estructura.</p>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>Light microscopes <span class="es term-es">· Microscopios ópticos</span></h3>
+            <ul>
+              <li>Use a beam of <b>light</b> and glass lenses.</li>
+              <li>Cheap, easy to use, can view <b>living</b> specimens.</li>
+              <li>Magnify up to about <b>×1500 – ×2000</b>.</li>
+              <li>Specimens must be thin so light passes through; often <b>stained</b> to see structures (most cells are transparent).</li>
+              <li>Cannot resolve very small organelles like ribosomes.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Electron microscopes <span class="es term-es">· Microscopios electrónicos</span></h3>
+            <ul>
+              <li>Use a beam of <b>electrons</b> instead of light.</li>
+              <li>Much higher <b>magnification</b> (up to ×2,000,000) and <b>resolution</b>.</li>
+              <li>Can see small organelles (e.g. ribosomes, detail inside mitochondria), sometimes in 3D.</li>
+              <li>Large, very expensive, cannot be used on living specimens.</li>
+              <li>Images often appear black/grey (not in natural colour).</li>
+            </ul>
+          </div>
+        </div>
+        <div class="examlang"><b>KEY EXAM LANGUAGE — Resolution vs magnification:</b> <b>Magnification</b> = how much bigger the image is. <b>Resolution</b> = how well a microscope can distinguish between two points that are close together (i.e. how much detail/clarity you get).</div>
+        <div class="concept">
+          <p><b>How microscopy improved our understanding of cells:</b> Because electron microscopes have much greater magnification and resolution than light microscopes, scientists could see organelles (like ribosomes and the internal structure of mitochondria) that are invisible under a light microscope. This let scientists build a far more detailed model of what is inside a cell.</p>
+        </div>
+
+        <h3>Using a light microscope</h3>
+        <div class="card">
+          <p style="text-align:center;font-weight:700;font-size:1.05rem;color:var(--navy);">Total magnification = eyepiece lens magnification × objective lens magnification</p>
+          <ul>
+            <li>Always start with the <b>lowest-power objective lens</b> (e.g. ×4) — it gives the widest field of view, making it easier to find your specimen.</li>
+            <li>Use the <b>coarse focus</b> knob first (moves the stage up/down by a large amount) — <i>only at low power</i>.</li>
+            <li>Switch to a higher-power objective lens, then use the <b>fine focus</b> knob to sharpen the image.</li>
+            <li><b>Never</b> use the coarse focus knob at high power — it can move the stage too far and smash the slide into the objective lens.</li>
+          </ul>
+        </div>
+
+        <h3>🔎 Interactive: Light vs Electron microscope</h3>
+        <p>Sort each feature into the correct microscope (or both).</p>
+        <div id="sortMicroscope"></div>
+
+        <h3>✅ Quick check questions</h3>
+        <div id="quiz-sec4"></div>
+      </section>
+
+      <!-- ============ SECTION 5: REQUIRED PRACTICAL - MICROSCOPY ============ -->
+      <section class="topic" id="sec5">
+        <h2>5. Required Practical — Microscopy <span class="es">· Práctica obligatoria – Microscopía</span></h2>
+
+        <div class="card">
+          <b>Aim <span class="es">· Objetivo</span>:</b> To prepare a slide of plant cells (onion/epidermal tissue) and observe them using a light microscope, producing a labelled scientific drawing.
+        </div>
+
+        <h3>Apparatus &amp; specimen preparation</h3>
+        <ol>
+          <li>Use a dropping pipette to put <b>one drop of water</b> onto the microscope slide.</li>
+          <li>Peel off a thin layer of epidermal (skin) tissue from the specimen.</li>
+          <li>Use forceps to place the thin layer flat onto the slide, on top of the water.</li>
+          <li>Add <b>2 drops of iodine solution</b> — this <b>stains</b> the cell structures so they are easier to see. <span style="color:var(--red);font-weight:700;">⚠ Iodine is an irritant — wear eye protection and wash hands if spilled.</span></li>
+          <li>Lower a <b>coverslip</b> onto the specimen carefully using a mounted needle (avoids trapping air bubbles).</li>
+          <li>Use paper towel to soak up any excess liquid.</li>
+        </ol>
+
+        <h3>Viewing the slide</h3>
+        <ol>
+          <li>Place the slide on the <b>stage</b> and secure with the stage clips.</li>
+          <li>Select the <b>lowest-power objective lens</b> first — a smaller field of view at high power makes it hard to locate the cells.</li>
+          <li>Turn the <b>coarse focus</b> knob to bring the specimen roughly into focus.</li>
+          <li>Turn the <b>fine focus</b> knob to sharpen the image.</li>
+          <li>To see more detail, rotate to a higher-power objective lens and refocus using only the fine focus knob.</li>
+          <li>Make a clear, labelled scientific drawing of what you see.</li>
+        </ol>
+
+        <div class="examlang"><b>Safety:</b> handle glass slides and coverslips carefully — they break easily and can cut skin. Iodine is an irritant.</div>
+        <div class="examlang"><b>Common mistakes:</b> starting on high power (can't find the specimen); using the coarse focus knob at high power (may crack the slide); forgetting to state the magnification used on your drawing; drawing individual cells with thick, sketchy outlines.</div>
+
+        <h3>Biological drawing conventions</h3>
+        <ul>
+          <li>Draw with a sharp pencil, using clear <b>continuous</b> lines (no shading/colouring).</li>
+          <li>Use a ruler to draw straight label lines — they must never cross.</li>
+          <li>Always state the <b>magnification</b> used next to your drawing.</li>
+          <li>Include at least 2–3 cells, drawn to scale relative to each other.</li>
+        </ul>
+
+        <h3>🔬 Interactive activity: Put the method in the correct order</h3>
+        <div id="orderMicroscopy"></div>
+
+        <h3>✅ Exam-style questions</h3>
+        <div id="quiz-sec5"></div>
+      </section>
+      <!-- ============ SECTION 6: DNA, CHROMOSOMES & GENES ============ -->
+      <section class="topic" id="sec6">
+        <h2>6. DNA, Chromosomes and Genes <span class="es">· ADN, cromosomas y genes</span></h2>
+
+        <div class="card" style="background:var(--navy);color:#fff;text-align:center;padding:22px;">
+          <div style="font-size:1.1rem;font-weight:700;letter-spacing:.03em;">
+            CELL &nbsp;→&nbsp; NUCLEUS &nbsp;→&nbsp; CHROMOSOME &nbsp;→&nbsp; DNA &nbsp;→&nbsp; GENE
+          </div>
+          <div class="es" style="margin-top:6px;font-size:.85rem;background:transparent;color:#ffe0b3;">
+            CÉLULA → NÚCLEO → CROMOSOMA → ADN → GEN
+          </div>
+        </div>
+
+        <div class="concept">
+          <h3>DNA <span class="es term-es">· ADN</span></h3>
+          <p><b>English:</b> DNA (deoxyribonucleic acid) is the chemical inside the nucleus that carries an organism's genetic information — the instructions needed to grow, develop and function.</p>
+          <p class="es"><b>Español:</b> El ADN es el compuesto químico dentro del núcleo que contiene la información genética de un organismo: las instrucciones necesarias para crecer y funcionar.</p>
+        </div>
+        <div class="concept">
+          <h3>CHROMOSOME <span class="es term-es">· Cromosoma</span></h3>
+          <p><b>English:</b> A structure made of tightly coiled DNA, found in the nucleus. A human body cell contains <b>46 chromosomes</b>, arranged in <b>23 pairs</b>. Each chromosome in a pair carries the same type of genes — one of each pair comes from each parent.</p>
+          <p class="es"><b>Español:</b> Una estructura hecha de ADN muy enrollado, dentro del núcleo. Una célula humana tiene <b>46 cromosomas</b> en <b>23 pares</b>. En cada célula, el 50% del ADN se hereda de cada progenitor.</p>
+        </div>
+        <div class="concept">
+          <h3>GENE <span class="es term-es">· Gen</span></h3>
+          <p><b>English:</b> A gene is a small section of a chromosome (a section of DNA) that codes for one particular protein, and so controls one characteristic of the organism.</p>
+          <p class="es"><b>Español:</b> Un gen es una pequeña sección de un cromosoma (una parte del ADN) que codifica una proteína concreta y controla una característica.</p>
+          <div class="examlang"><b>KEY EXAM LANGUAGE:</b> "a short section of DNA" &nbsp;·&nbsp; "codes for a protein" &nbsp;·&nbsp; "controls a characteristic"</div>
+        </div>
+
+        <h3>🧬 Interactive activity: Build the hierarchy</h3>
+        <p>Click the boxes below in the correct order, from largest structure to smallest.</p>
+        <div id="orderHierarchy"></div>
+
+        <h3>✅ Quick check questions</h3>
+        <div id="quiz-sec6"></div>
+      </section>
+
+      <!-- ============ SECTION 7: CELL CYCLE & MITOSIS ============ -->
+      <section class="topic" id="sec7">
+        <h2>7. Cell Cycle and Mitosis <span class="es">· Ciclo celular y mitosis</span></h2>
+
+        <div class="concept">
+          <h3>MITOSIS <span class="es term-es">· Mitosis</span></h3>
+          <p><b>English:</b> A type of cell division that produces <b>two genetically identical daughter cells</b>. Mitosis is used for growth, repair of damaged tissue, and asexual reproduction.</p>
+          <p class="es"><b>Español:</b> Un tipo de división celular que produce <b>dos células hijas genéticamente idénticas</b>. La mitosis se usa para el crecimiento, la reparación de tejidos y la reproducción asexual.</p>
+          <div class="examlang"><b>KEY EXAM LANGUAGE:</b> "genetically identical" &nbsp;·&nbsp; "daughter cells" &nbsp;·&nbsp; "growth and repair"</div>
+        </div>
+
+        <h3>The three stages of the cell cycle</h3>
+        <p>Before a cell divides, its DNA and organelles must be copied — this ensures both daughter cells end up with a full, identical set.</p>
+        <div class="grid2">
+          <div class="card">
+            <h3>1. Growth (Interphase) <span class="es">· Interfase</span></h3>
+            <ul><li>DNA is copied — two identical copies of each chromosome are produced.</li>
+            <li>The number of sub-cellular structures (ribosomes, mitochondria) increases.</li>
+            <li>The cell grows in size.</li></ul>
+          </div>
+          <div class="card">
+            <h3>2. Mitosis <span class="es">· Mitosis</span></h3>
+            <ul><li>The chromosomes are separated.</li>
+            <li>One full set of chromosomes is pulled to each end of the cell.</li>
+            <li>The nucleus divides — two new nuclei form.</li></ul>
+          </div>
+        </div>
+        <div class="card">
+          <h3>3. Cytokinesis <span class="es">· Citocinesis</span></h3>
+          <ul><li>The cytoplasm and cell membrane divide.</li>
+          <li>Two separate, genetically identical daughter cells are formed.</li></ul>
+        </div>
+
+        <div class="card" style="background:var(--amber-light);border:none;">
+          <b>Don't mix these up!</b>
+          <table class="gloss-table">
+            <tr><th>Term</th><th>What actually happens</th></tr>
+            <tr><td><b>DNA replication</b></td><td>Copying the DNA so there are two identical sets — happens during the growth stage, <i>before</i> mitosis.</td></tr>
+            <tr><td><b>Mitosis</b></td><td>The <i>nucleus</i> divides — chromosomes are separated into two identical sets.</td></tr>
+            <tr><td><b>Cytokinesis</b></td><td>The <i>cytoplasm and cell membrane</i> divide, forming two separate daughter cells.</td></tr>
+          </table>
+        </div>
+
+        <p><b>Why is mitosis important?</b> It allows multicellular organisms to <b>grow</b> (more cells = bigger body) and to <b>repair</b> damaged tissue by replacing dead or injured cells with genetically identical new ones.</p>
+
+        <h3>🔁 Interactive activity: Put the cell cycle in order</h3>
+        <div id="orderCellCycle"></div>
+
+        <h3>🧮 Cell cycle timing calculations</h3>
+        <p>You may be asked to calculate how long a stage takes, either from a <b>percentage of time</b> or from a <b>number of cells</b> counted in each stage.</p>
+        <div class="tool-box" id="cellCycleCalc"></div>
+
+        <h3>✅ Quick check questions</h3>
+        <div id="quiz-sec7"></div>
+      </section>
+      <!-- ============ SECTION 8: DIFFUSION ============ -->
+      <section class="topic" id="sec8">
+        <h2>8. Diffusion <span class="es">· Difusión</span></h2>
+
+        <div class="concept">
+          <h3>DIFFUSION <span class="es term-es">· Difusión</span></h3>
+          <p><b>English:</b> The net movement of particles from an area of <b>higher concentration</b> to an area of <b>lower concentration</b>, down a concentration gradient. Diffusion is a <b>passive process</b> — it does not require energy.</p>
+          <p class="es"><b>Español:</b> El movimiento neto de partículas desde una zona de <b>mayor concentración</b> hacia una zona de <b>menor concentración</b>, a favor del gradiente de concentración. La difusión es un proceso <b>pasivo</b> — no necesita energía.</p>
+          <div class="examlang"><b>KEY EXAM LANGUAGE:</b> net movement &nbsp;·&nbsp; higher concentration &nbsp;·&nbsp; lower concentration &nbsp;·&nbsp; concentration gradient</div>
+        </div>
+        <p>Particles in a gas or liquid move constantly in <b>random</b> directions. This random movement is passive (no energy needed), but overall — <b>on net</b> — more particles end up moving from high to low concentration until the particles are evenly spread (<b>equilibrium</b>).</p>
+
+        <h3>Factors affecting the rate of diffusion</h3>
+        <div class="grid2">
+          <div class="card"><b>Concentration gradient</b><p>A bigger difference in concentration between two areas means faster diffusion.</p></div>
+          <div class="card"><b>Temperature</b><p>Higher temperature → particles have more kinetic energy → they move faster → diffusion is faster.</p></div>
+        </div>
+        <div class="card"><b>Surface area</b><p>A larger surface area gives more space for particles to cross, so more diffusion can happen in the same time.</p></div>
+
+        <h3>Exchange surfaces &amp; their adaptations</h3>
+        <p>Surfaces where substances diffuse in/out of organisms (e.g. lungs, small intestine, gills, roots) are adapted to maximise the rate of diffusion:</p>
+        <ul>
+          <li><b>Large surface area</b> — more space for diffusion to happen across.</li>
+          <li><b>Thin membrane/surface</b> — short diffusion distance.</li>
+          <li><b>Good blood supply / ventilation</b> — maintains a steep concentration gradient by constantly removing/replenishing substances.</li>
+        </ul>
+        <p>Examples: <b>oxygen</b> and <b>glucose</b> diffuse into cells; <b>carbon dioxide</b> and <b>urea</b> diffuse out as waste.</p>
+
+        <h3>🌡️ Interactive particle model</h3>
+        <p>Drag the sliders to change temperature and concentration difference, and watch how the rate of diffusion changes.</p>
+        <div class="tool-box">
+          <label>Temperature: <span id="diffTempVal">20</span>°C</label>
+          <input type="range" id="diffTemp" min="0" max="100" value="20">
+          <label>Concentration difference (left vs right side): <span id="diffConcVal">Medium</span></label>
+          <input type="range" id="diffConc" min="1" max="3" value="2" step="1">
+          <canvas id="diffCanvas" width="600" height="220" style="width:100%;max-width:600px;border-radius:10px;background:#eef6f8;display:block;margin:10px auto;"></canvas>
+          <p style="text-align:center;font-size:.85rem;color:var(--text-light);">Particles start concentrated on the left. Watch the net movement to the right (down the concentration gradient) — faster with higher temperature and bigger concentration difference.</p>
+        </div>
+
+        <h3>🚩 Misconception check</h3>
+        <div id="misconceptionDiffusion"></div>
+
+        <h3>✅ Quick check questions</h3>
+        <div id="quiz-sec8"></div>
+      </section>
+
+      <!-- ============ SECTION 9: SURFACE AREA : VOLUME RATIO ============ -->
+      <section class="topic" id="sec9">
+        <h2>9. Surface Area : Volume Ratio <span class="es">· Relación superficie : volumen</span></h2>
+
+        <div class="concept">
+          <h3>SURFACE AREA : VOLUME RATIO <span class="es term-es">· Relación SA:V</span></h3>
+          <p><b>English:</b> As an organism (or cell) gets <b>bigger</b>, its surface area to volume ratio gets <b>smaller</b>. This matters because the rate of exchange (diffusion) depends on surface area, but the demand for substances depends on volume.</p>
+          <p class="es"><b>Español:</b> A medida que un organismo (o célula) crece, su relación superficie:volumen se hace <b>más pequeña</b>. Esto importa porque el intercambio (difusión) depende del área, pero la demanda depende del volumen.</p>
+        </div>
+
+        <p><b>Small organisms</b> (e.g. bacteria, single-celled organisms) have a large SA:V ratio — every part is close to the surface, so diffusion alone is fast enough to supply/remove substances. <b>Large organisms</b> (e.g. mammals) have a small SA:V ratio — diffusion alone would be too slow to reach the centre of the body, so they need specialised exchange surfaces (lungs, gills, intestine villi) and transport systems (blood/circulatory system).</p>
+
+        <div class="examlang"><b>KEY EXAM LANGUAGE — sentence scaffold:</b>
+        <div class="scaffold">"As the size of the organism increases, the surface area to volume ratio ______. This means diffusion becomes ______, so larger organisms need ______."</div>
+        <p class="es">"A medida que aumenta el tamaño del organismo, la relación superficie:volumen ______. Esto significa que la difusión se vuelve ______, por lo que los organismos grandes necesitan ______."</p>
+        </div>
+
+        <h3>📐 Interactive cube model</h3>
+        <p>Drag the slider to change the side length of a cube-shaped "cell" and see how SA, volume and the SA:V ratio change.</p>
+        <div class="tool-box">
+          <label>Side length: <span id="cubeSideVal">2</span> cm</label>
+          <input type="range" id="cubeSide" min="1" max="10" value="2" step="1">
+          <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin-top:14px;">
+            <svg id="cubeSvg" width="150" height="150" viewBox="0 0 150 150"></svg>
+            <div class="stat-row" style="flex:1;">
+              <div class="stat"><div class="val" id="cubeSA">24</div><div class="lab">Surface area (cm²)</div></div>
+              <div class="stat"><div class="val" id="cubeVol">8</div><div class="lab">Volume (cm³)</div></div>
+              <div class="stat"><div class="val" id="cubeRatio">3 : 1</div><div class="lab">SA : V ratio</div></div>
+            </div>
+          </div>
+          <div class="progressbar-outer" style="margin-top:12px;"><div class="progressbar-inner" id="cubeRatioBar" style="background:linear-gradient(90deg,var(--amber),var(--red));"></div></div>
+          <p style="font-size:.8rem;color:var(--text-light);text-align:center;">Bar shows relative SA:V — notice it shrinks as the cube gets bigger.</p>
+        </div>
+        <div class="examlang"><b>Formulae for a cube of side length s:</b> Surface area = 6 × s² &nbsp;&nbsp;|&nbsp;&nbsp; Volume = s³ &nbsp;&nbsp;|&nbsp;&nbsp; SA:V ratio = surface area ÷ volume</div>
+
+        <h3>📝 Calculation practice</h3>
+        <div id="savPractice"></div>
+
+        <h3>✅ Quick check questions</h3>
+        <div id="quiz-sec9"></div>
+      </section>
+      <!-- ============ SECTION 10: OSMOSIS ============ -->
+      <section class="topic" id="sec10">
+        <h2>10. Osmosis <span class="es">· Ósmosis</span></h2>
+
+        <div class="concept">
+          <h3>OSMOSIS <span class="es term-es">· Ósmosis</span></h3>
+          <p><b>English:</b> The net movement of <b>water</b> molecules from a region of <b>higher water concentration</b> to a region of <b>lower water concentration</b>, through a <b>partially permeable membrane</b>.</p>
+          <p class="es"><b>Español:</b> El movimiento neto de moléculas de <b>agua</b> desde una zona de mayor concentración de agua hacia una zona de menor concentración de agua, a través de una <b>membrana parcialmente permeable</b>.</p>
+          <div class="examlang"><b>KEY EXAM LANGUAGE:</b> movement of WATER &nbsp;·&nbsp; partially permeable membrane &nbsp;·&nbsp; high to low water concentration</div>
+        </div>
+
+        <div class="card" style="background:var(--amber-light);border:none;">
+          <b>🚩 Common misconception:</b> Osmosis is <i>not</i> the same as diffusion! Diffusion can move <b>any</b> small particle (e.g. oxygen, CO₂, glucose) and doesn't need a special membrane. Osmosis is specifically about <b>water</b> moving through a <b>partially permeable membrane</b>.
+        </div>
+
+        <h3>Dilute vs concentrated solutions</h3>
+        <div class="grid2">
+          <div class="card"><b>Dilute solution</b> <span class="es term-es">· Solución diluida</span><p>High water concentration, low solute concentration.</p></div>
+          <div class="card"><b>Concentrated solution</b> <span class="es term-es">· Solución concentrada</span><p>Low water concentration, high solute concentration.</p></div>
+        </div>
+        <p>Water always moves from <b>dilute → concentrated</b> (i.e. from high to low water concentration). An <b>isotonic</b> solution has the same water concentration as the cell, so there is no net movement of water.</p>
+
+        <h3>Effects of osmosis on cells</h3>
+        <table class="gloss-table">
+          <tr><th>Solution</th><th>Animal cell</th><th>Plant cell</th></tr>
+          <tr><td>Dilute / pure water</td><td>Water enters → cell swells → may <b>burst / lyse</b> (no cell wall to stop it)</td><td>Water enters → cell swells → becomes <b>turgid</b> (cell wall stops it bursting)</td></tr>
+          <tr><td>Isotonic</td><td>No net movement — no change</td><td>No net movement — no change</td></tr>
+          <tr><td>Concentrated</td><td>Water leaves → cell shrinks / <b>crenated</b></td><td>Water leaves → membrane pulls away from wall → <b>plasmolysed</b> / flaccid</td></tr>
+        </table>
+        <p><b>Why don't plant cells burst?</b> The cellulose cell wall is strong and elastic — it pushes back against the swelling vacuole and membrane, so the cell becomes rigid (turgid) instead of bursting.</p>
+
+        <h3>💧 Interactive osmosis model</h3>
+        <p>Choose a solution and watch what happens to an animal cell and a plant cell.</p>
+        <div class="tool-box">
+          <label>External solution:</label>
+          <div style="display:flex;gap:8px;margin:8px 0;flex-wrap:wrap;">
+            <button class="btn secondary small" data-osmo="dilute">Dilute solution / pure water</button>
+            <button class="btn secondary small" data-osmo="isotonic">Isotonic solution</button>
+            <button class="btn secondary small" data-osmo="concentrated">Concentrated solution</button>
+          </div>
+          <div style="display:flex;gap:30px;justify-content:center;flex-wrap:wrap;margin-top:14px;">
+            <div style="text-align:center;"><svg id="osmoAnimal" width="140" height="140" viewBox="0 0 140 140"></svg><div style="font-weight:600;">Animal cell</div><div id="osmoAnimalLabel" style="font-size:.85rem;color:var(--text-light);">–</div></div>
+            <div style="text-align:center;"><svg id="osmoPlant" width="140" height="140" viewBox="0 0 140 140"></svg><div style="font-weight:600;">Plant cell</div><div id="osmoPlantLabel" style="font-size:.85rem;color:var(--text-light);">–</div></div>
+          </div>
+        </div>
+
+        <h3>✅ Quick check questions</h3>
+        <div id="quiz-sec10"></div>
+      </section>
+
+      <!-- ============ SECTION 11: REQUIRED PRACTICAL - OSMOSIS ============ -->
+      <section class="topic" id="sec11">
+        <h2>11. Required Practical — Osmosis <span class="es">· Práctica obligatoria – Ósmosis</span></h2>
+
+        <div class="card"><b>Aim:</b> To investigate the effect of different sugar solution concentrations on the mass of plant tissue (e.g. potato or aubergine cylinders).</div>
+
+        <div class="grid2">
+          <div class="card"><b>Independent variable</b><p>Concentration of the sugar solution (e.g. 0, 0.25, 0.5, 0.75, 1.0 mol/dm³).</p></div>
+          <div class="card"><b>Dependent variable</b><p>Change in mass of the plant tissue.</p></div>
+        </div>
+        <div class="card"><b>Control variables</b><p>Type of plant tissue, size/volume of cylinders, temperature, time left in solution.</p></div>
+
+        <h3>Method</h3>
+        <ol>
+          <li>Cut cylinders of plant tissue to the <b>same diameter</b> (cork borer) and <b>trim to the same length</b> — remove the skin, as it is impermeable.</li>
+          <li>Blot each cylinder dry and record its <b>initial mass</b>.</li>
+          <li>Place one cylinder into each of five sugar solutions of different concentration (10 cm³ each).</li>
+          <li>Leave for a set time (e.g. 20 minutes).</li>
+          <li>Remove each cylinder, blot dry again, and record the <b>final mass</b>.</li>
+          <li>Calculate the change in mass and the percentage change in mass for each cylinder.</li>
+        </ol>
+        <div class="examlang"><b>Safety:</b> take care with a sharp knife/cork borer when cutting the plant tissue.</div>
+
+        <h3>Percentage change in mass</h3>
+        <div class="card">
+          <p style="text-align:center;font-weight:700;color:var(--navy);">change in mass = final mass − initial mass</p>
+          <p style="text-align:center;font-weight:700;color:var(--navy);">% change in mass = (change in mass ÷ initial mass) × 100</p>
+        </div>
+
+        <h3>🧮 Percentage change calculator</h3>
+        <div class="tool-box">
+          <label>Initial mass (g): <input type="number" id="pcInitial" step="0.01" placeholder="e.g. 10.0"></label>
+          <label style="margin-left:14px;">Final mass (g): <input type="number" id="pcFinal" step="0.01" placeholder="e.g. 8.6"></label>
+          <button class="btn small" id="pcCalcBtn" style="margin-left:10px;">Calculate % change</button>
+          <div id="pcResult" style="margin-top:12px;font-weight:700;"></div>
+        </div>
+
+        <h3>📝 Practice questions</h3>
+        <div id="pcPractice"></div>
+
+        <h3>Interpreting the graph</h3>
+        <p>Plot <b>% change in mass</b> (y-axis) against <b>concentration of solution</b> (x-axis) and draw a line of best fit. The point where the line crosses the x-axis (0% change) tells you the concentration that is <b>isotonic</b> with the tissue — this is an estimate of the tissue's own cell sap concentration.</p>
+        <div class="tool-box" id="graphInterpret"></div>
+
+        <h3>✅ Exam-style questions</h3>
+        <div id="quiz-sec11"></div>
+      </section>
+
+      <!-- ============ SECTION 12: ACTIVE TRANSPORT ============ -->
+      <section class="topic" id="sec12">
+        <h2>12. Active Transport <span class="es">· Transporte activo</span></h2>
+
+        <div class="concept">
+          <h3>ACTIVE TRANSPORT <span class="es term-es">· Transporte activo</span></h3>
+          <p><b>English:</b> The movement of particles from a region of <b>lower concentration</b> to a region of <b>higher concentration</b> — i.e. <b>against</b> the concentration gradient. This requires <b>energy</b>, which comes from <b>respiration</b> in the mitochondria.</p>
+          <p class="es"><b>Español:</b> El movimiento de partículas desde una zona de <b>menor concentración</b> hacia una zona de <b>mayor concentración</b>, es decir, en <b>contra</b> del gradiente de concentración. Necesita <b>energía</b>, que proviene de la respiración en las mitocondrias.</p>
+          <div class="examlang"><b>KEY EXAM LANGUAGE:</b> low to high concentration &nbsp;·&nbsp; against the concentration gradient &nbsp;·&nbsp; requires energy from respiration</div>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <h3>Root hair cells <span class="es term-es">· Células pilíferas</span></h3>
+            <p>Plants need mineral ions (e.g. nitrate) for healthy growth, but soil often has a <b>lower</b> concentration of these ions than inside the root cell. Root hair cells actively transport mineral ions <b>against</b> the concentration gradient, using energy from respiration. They contain many <b>mitochondria</b> to supply this energy.</p>
+          </div>
+          <div class="card">
+            <h3>Intestinal epithelial cells <span class="es term-es">· Células epiteliales intestinales</span></h3>
+            <p>Once most glucose has diffused out of the gut, its concentration can become lower in the gut than in the blood/cells. Active transport allows cells lining the small intestine to continue absorbing glucose <b>against</b> its concentration gradient.</p>
+          </div>
+        </div>
+
+        <h3>⚖️ Interactive comparison: Diffusion vs Osmosis vs Active Transport</h3>
+        <p>For each statement, choose which process it describes.</p>
+        <div id="compareTransport"></div>
+
+        <h3>Summary table</h3>
+        <table class="gloss-table">
+          <tr><th></th><th>Diffusion</th><th>Osmosis</th><th>Active transport</th></tr>
+          <tr><td>What moves</td><td>Any small particle</td><td>Water only</td><td>Any particle (e.g. glucose, ions)</td></tr>
+          <tr><td>Direction</td><td>High → low concentration</td><td>High → low water concentration</td><td>Low → high concentration</td></tr>
+          <tr><td>Energy needed?</td><td>No (passive)</td><td>No (passive)</td><td>Yes (from respiration)</td></tr>
+          <tr><td>Membrane needed?</td><td>Not always</td><td>Partially permeable membrane</td><td>Cell membrane (carrier proteins)</td></tr>
+          <tr><td>Example</td><td>O₂ into cells</td><td>Water into root cells</td><td>Mineral ions into root hair cells</td></tr>
+        </table>
+
+        <h3>✅ Quick check questions</h3>
+        <div id="quiz-sec12"></div>
+      </section>
+
+      <!-- ============ GLOSSARY ============ -->
+      <section class="panel" id="glossary">
+        <h2>📖 Glossary <span class="es">· Glosario</span></h2>
+        <p>Search for a word in English or Spanish. Use the flashcards below to test yourself.</p>
+        <input type="text" id="glossSearch" placeholder="Search the glossary… / Buscar en el glosario…">
+        <div class="card" style="overflow-x:auto;max-height:420px;overflow-y:auto;">
+          <table class="gloss-table" id="glossTable"><thead><tr><th>English</th><th>Español</th></tr></thead><tbody></tbody></table>
+        </div>
+        <h3 style="margin-top:26px;">🗂️ Flashcards</h3>
+        <div class="flashwrap">
+          <div class="flashcard" id="flashcard"><div class="face front" id="flashFront"></div><div class="face back" id="flashBack"></div></div>
+          <div class="flashnav">
+            <button class="btn secondary small" id="flashPrev">◀ Prev</button>
+            <span id="flashCount" style="font-size:.85rem;color:var(--text-light);"></span>
+            <button class="btn secondary small" id="flashNext">Next ▶</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ FINAL ASSESSMENT ============ -->
+      <section class="panel" id="final">
+        <h2>🏆 End-of-Topic Challenge <span class="es">· Desafío final</span></h2>
+        <p>25 questions covering the whole Cell Biology topic — knowledge (AO1), application (AO2) and analysis/practical skills (AO3). You'll get feedback after each question and a full breakdown at the end.</p>
+        <div id="finalIntro">
+          <button class="btn" id="startFinal">Start the challenge</button>
+        </div>
+        <div id="finalQuizArea"></div>
+        <div id="finalResults"></div>
+      </section>
+
+    </main>
+    <footer>Cell Biology Learning Hub · Built for GCSE Biology revision · Bilingual English/Spanish support</footer>
+  </div>
+</div>
+<script>
+/* =====================================================================
+   DATA
+===================================================================== */
+const GLOSSARY = [
+["cell","célula"],["nucleus","núcleo"],["cytoplasm","citoplasma"],
+["cell membrane","membrana celular"],["mitochondria","mitocondria(s)"],
+["ribosome","ribosoma"],["cell wall","pared celular"],["chloroplast","cloroplasto"],
+["permanent vacuole","vacuola permanente"],["eukaryote / eukaryotic cell","eucariota / célula eucariota"],
+["prokaryote / prokaryotic cell","procariota / célula procariota"],["plasmid","plásmido"],
+["flagellum","flagelo"],["capsule","cápsula"],["magnification","aumento"],
+["resolution","resolución"],["micrometre (μm)","micrómetro"],["nanometre (nm)","nanómetro"],
+["millimetre (mm)","milímetro"],["light microscope","microscopio óptico"],
+["electron microscope","microscopio electrónico"],["objective lens","lente objetivo"],
+["eyepiece lens","lente ocular"],["stage (microscope)","platina"],["focus","enfoque"],
+["coverslip","cubreobjetos"],["specimen","muestra"],["stain","tinción / colorante"],
+["chromosome","cromosoma"],["DNA","ADN"],["gene","gen"],["mitosis","mitosis"],
+["cell cycle","ciclo celular"],["interphase / growth stage","interfase"],
+["cytokinesis","citocinesis"],["daughter cell","célula hija"],["diffusion","difusión"],
+["concentration","concentración"],["concentration gradient","gradiente de concentración"],
+["surface area","superficie / área de superficie"],["volume","volumen"],
+["osmosis","ósmosis"],["partially permeable membrane","membrana parcialmente permeable"],
+["solute","soluto"],["solvent","disolvente"],["solution","solución"],
+["dilute","diluido"],["concentrated","concentrado"],["isotonic","isotónico"],
+["turgid","túrgido"],["flaccid / plasmolysed","flácido / plasmolizado"],
+["active transport","transporte activo"],["respiration","respiración"],
+["root hair cell","célula pilífera (del pelo radicular)"],["epithelial cell","célula epitelial"],
+["organelle","orgánulo"],["protein synthesis","síntesis de proteínas"],
+["photosynthesis","fotosíntesis"]
+];
+
+const OPTS8 = ["Nucleus","Cytoplasm","Cell membrane","Mitochondria","Ribosomes","Cell wall","Chloroplast","Permanent vacuole"];
+const ANIMAL_LABELS = [0,1,3,2,4]; // nucleus, cytoplasm, mitochondria, cell membrane, ribosomes
+const PLANT_LABELS  = [0,7,6,5,3]; // nucleus, permanent vacuole, chloroplast, cell wall, mitochondria
+
+const SECTION_META = [
+ {id:"sec1",icon:"🟠",title:"Plant &amp; Animal Cells",desc:"Organelles &amp; their functions"},
+ {id:"sec2",icon:"🟣",title:"Prokaryotic Cells",desc:"Bacteria vs eukaryotes"},
+ {id:"sec3",icon:"🔢",title:"Magnification &amp; Units",desc:"Calculations &amp; conversions"},
+ {id:"sec4",icon:"🔬",title:"Microscopy",desc:"Light vs electron microscopes"},
+ {id:"sec5",icon:"🧫",title:"RP: Microscopy",desc:"Required practical"},
+ {id:"sec6",icon:"🧬",title:"DNA, Chromosomes &amp; Genes",desc:"Cell → Nucleus → Gene"},
+ {id:"sec7",icon:"🔁",title:"Cell Cycle &amp; Mitosis",desc:"Growth, mitosis, cytokinesis"},
+ {id:"sec8",icon:"💨",title:"Diffusion",desc:"Particle movement"},
+ {id:"sec9",icon:"📐",title:"Surface Area : Volume",desc:"SA:V ratio &amp; exchange"},
+ {id:"sec10",icon:"💧",title:"Osmosis",desc:"Water movement"},
+ {id:"sec11",icon:"🥔",title:"RP: Osmosis",desc:"Required practical"},
+ {id:"sec12",icon:"⚡",title:"Active Transport",desc:"Against the gradient"},
+];
+
+/* =====================================================================
+   GENERIC COMPONENTS
+===================================================================== */
+function renderMCQList(containerId, questions){
+  const c = document.getElementById(containerId);
+  if(!c) return;
+  questions.forEach((q,qi)=>{
+    const div = document.createElement('div'); div.className='quiz-q';
+    div.innerHTML = `<div class="qtext">${qi+1}. ${q.q}</div><div class="quiz-opts"></div><div class="feedback"></div>`;
+    const optsDiv = div.querySelector('.quiz-opts');
+    const allBtns=[];
+    q.opts.forEach((opt,oi)=>{
+      const b=document.createElement('button'); b.className='quiz-opt'; b.textContent=opt;
+      allBtns.push(b);
+      b.onclick=()=>{
+        allBtns.forEach(x=>x.classList.add('disabled'));
+        const fb=div.querySelector('.feedback');
+        if(oi===q.correct){
+          b.classList.add('correct');
+          fb.className='feedback show good'; fb.textContent='✅ Correct! '+(q.explain||'');
+        } else {
+          b.classList.add('incorrect'); allBtns[q.correct].classList.add('correct');
+          fb.className='feedback show bad'; fb.textContent='❌ Not quite — '+(q.explain||'');
+        }
+      };
+      optsDiv.appendChild(b);
+    });
+    c.appendChild(div);
+  });
+}
+
+function renderSortActivity(containerId, items, buckets){
+  const c=document.getElementById(containerId);
+  if(!c) return;
+  items.forEach((it)=>{
+    const row=document.createElement('div'); row.className='quiz-q';
+    row.innerHTML=`<div class="qtext">${it.text}</div><div class="quiz-opts" style="flex-direction:row;"></div><div class="feedback"></div>`;
+    const opts=row.querySelector('.quiz-opts');
+    const allBtns=[];
+    buckets.forEach(b=>{
+      const btn=document.createElement('button'); btn.className='quiz-opt'; btn.style.flex='0 0 auto'; btn.textContent=b.label;
+      allBtns.push(btn);
+      btn.onclick=()=>{
+        allBtns.forEach(x=>x.classList.add('disabled'));
+        const fb=row.querySelector('.feedback');
+        if(b.key===it.correct){
+          btn.classList.add('correct');
+          fb.className='feedback show good'; fb.textContent='✅ Correct. '+(it.explain||'');
+        } else {
+          btn.classList.add('incorrect');
+          allBtns.forEach((x,xi)=>{ if(buckets[xi].key===it.correct) x.classList.add('correct'); });
+          fb.className='feedback show bad'; fb.textContent='❌ Not quite — '+(it.explain||'');
+        }
+      };
+      opts.appendChild(btn);
+    });
+    c.appendChild(row);
+  });
+}
+
+function renderOrder(containerId, correctItems){
+  const c=document.getElementById(containerId);
+  if(!c) return;
+  let chosen=[];
+  const shuffled=correctItems.map((t,i)=>({t,i})).sort(()=>Math.random()-0.5);
+  c.innerHTML = `<div class="order-pool"></div><div class="order-slots"></div>
+    <button class="btn small" id="${containerId}-check">Check order</button>
+    <button class="btn secondary small" id="${containerId}-reset">Reset</button>
+    <div class="feedback" id="${containerId}-fb"></div>`;
+  const pool=c.querySelector('.order-pool');
+  const slots=c.querySelector('.order-slots');
+  correctItems.forEach((_,i)=>{ const s=document.createElement('div'); s.className='order-slot'; s.textContent=`${i+1}.`; slots.appendChild(s); });
+  shuffled.forEach(item=>{
+    const btn=document.createElement('button'); btn.textContent=item.t;
+    btn.onclick=()=>{
+      if(btn.disabled) return;
+      const slotIndex=chosen.length;
+      if(slotIndex>=correctItems.length) return;
+      chosen.push(item.i);
+      const slotEl=slots.children[slotIndex];
+      slotEl.textContent=`${slotIndex+1}. ${item.t}`;
+      slotEl.classList.add('filled');
+      btn.disabled=true;
+    };
+    pool.appendChild(btn);
+  });
+  document.getElementById(`${containerId}-check`).onclick=()=>{
+    const fb=document.getElementById(`${containerId}-fb`);
+    if(chosen.length<correctItems.length){ fb.className='feedback show bad'; fb.textContent='Place every item into the list first.'; return; }
+    let allCorrect=true;
+    chosen.forEach((origIdx,i)=>{
+      const slotEl=slots.children[i];
+      if(origIdx===i){ slotEl.classList.add('correct'); slotEl.classList.remove('incorrect'); }
+      else { slotEl.classList.add('incorrect'); slotEl.classList.remove('correct'); allCorrect=false; }
+    });
+    fb.className='feedback show '+(allCorrect?'good':'bad');
+    fb.textContent = allCorrect? '✅ Correct order!' : '❌ Some items are in the wrong place (marked red). Reset and try again.';
+  };
+  document.getElementById(`${containerId}-reset`).onclick=()=>renderOrder(containerId, correctItems);
+}
+
+function renderCalcPractice(containerId, questions){
+  const c=document.getElementById(containerId);
+  if(!c) return;
+  questions.forEach((q,i)=>{
+    const div=document.createElement('div'); div.className='quiz-q';
+    const inpId=`${containerId}-inp-${i}`;
+    div.innerHTML=`<div class="qtext">${i+1}. ${q.q}</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <input type="number" step="any" style="width:150px;" id="${inpId}">
+        <span style="color:var(--text-light);font-size:.85rem;">${q.unit||''}</span>
+        <button class="btn small">Check</button>
+      </div><div class="feedback"></div>`;
+    div.querySelector('button').onclick=()=>{
+      const val=parseFloat(document.getElementById(inpId).value);
+      const fb=div.querySelector('.feedback');
+      const tol = q.tolerance!==undefined? q.tolerance : Math.max(0.02*Math.abs(q.answer),0.05);
+      if(!isNaN(val) && Math.abs(val-q.answer)<=tol){
+        fb.className='feedback show good'; fb.textContent=`✅ Correct! ${q.explain||''}`;
+      } else {
+        fb.className='feedback show bad'; fb.textContent=`❌ Not quite. The correct answer is ${q.answer}${q.unit?(' '+q.unit):''}. ${q.explain||''}`;
+      }
+    };
+    c.appendChild(div);
+  });
+}
+</script>
+<script>
+/* =====================================================================
+   QUIZ DATA — one set per section
+===================================================================== */
+const quizSec1 = [
+ {q:"What is a cell?", opts:["The smallest living part / building block of life","A type of protein","Something only found in animals","A large organ"], correct:0, explain:"All living things are made of cells — the basic unit of life."},
+ {q:"Which structure is where most chemical reactions in the cell take place?", opts:["Nucleus","Cytoplasm","Cell membrane","Cell wall"], correct:1, explain:"The cytoplasm is a gel-like substance where most reactions happen."},
+ {q:"Which THREE organelles are found only in plant cells?", opts:["Nucleus, mitochondria, ribosome","Cell wall, chloroplast, permanent vacuole","Cytoplasm, membrane, nucleus","Mitochondria, chloroplast, nucleus"], correct:1, explain:"Cell wall, chloroplasts and the permanent vacuole are the three extra plant organelles."},
+ {q:"What is the function of the cell membrane?", opts:["Controls what substances enter and leave the cell","Makes proteins","Absorbs light for photosynthesis","Stores genetic information"], correct:0, explain:"The membrane is selectively (partially) permeable, controlling entry and exit of substances."},
+ {q:"A root hair cell has no chloroplasts, but is still a plant cell because it has...", opts:["a nucleus","a cell wall and a vacuole","chlorophyll","the ability to move"], correct:1, explain:"A cell wall and vacuole identify it as a plant cell, even without chloroplasts (it's underground, so doesn't photosynthesise)."}
+];
+const quizSec2 = [
+ {q:"What is the key difference between a prokaryote and a eukaryote?", opts:["Prokaryotes have no nucleus","Prokaryotes have no cytoplasm","Eukaryotes have no DNA","Eukaryotes are always bacteria"], correct:0, explain:"Prokaryotic cells (e.g. bacteria) lack a nucleus."},
+ {q:"Where is the genetic material found in a prokaryotic cell?", opts:["Inside a nucleus","Free in the cytoplasm","In the cell wall","In mitochondria"], correct:1, explain:"Prokaryotes have a single circular loop of DNA free in the cytoplasm — there's no nucleus."},
+ {q:"Which is a real difference between bacterial and eukaryotic DNA?", opts:["Bacterial DNA is circular, eukaryotic DNA is linear","Bacterial DNA is linear, eukaryotic DNA is circular","They are identical","Bacteria have no DNA at all"], correct:0, explain:"Bacterial DNA is one circular loop; eukaryotic DNA is linear, organised into chromosomes."},
+ {q:"What is the function of a flagellum?", opts:["Protein synthesis","Helps the cell move / swim","Stores DNA","Absorbs light"], correct:1, explain:"A flagellum is a tail-like structure some bacteria use to move."},
+ {q:"Give a similarity between plant cells and bacterial cells.", opts:["Both have chloroplasts","Both have a cell wall","Both have a nucleus","Both have mitochondria"], correct:1, explain:"Both have a cell wall — although made of different materials (cellulose in plants)."}
+];
+const quizSec4 = [
+ {q:"Total magnification of a microscope = ?", opts:["eyepiece + objective","eyepiece × objective","objective ÷ eyepiece","eyepiece − objective"], correct:1, explain:"Total magnification = eyepiece lens magnification × objective lens magnification."},
+ {q:"Which microscope allows scientists to see ribosomes?", opts:["Light microscope","Electron microscope","Both equally well","Neither"], correct:1, explain:"Ribosomes are too small to resolve with a light microscope."},
+ {q:"Why should you use the lowest-power objective lens first?", opts:["It gives the widest field of view, making it easier to find the specimen","It has the best resolution","It magnifies the most","It doesn't need focusing"], correct:0, explain:"A wide field of view at low power makes it much easier to locate your specimen before zooming in."},
+ {q:"Resolution refers to...", opts:["how big the image looks","how well two close points can be told apart","the colour of the image","the cost of the microscope"], correct:1, explain:"Resolution is about clarity/detail, not size — it's the ability to distinguish two close points as separate."}
+];
+const quizSec5 = [
+ {q:"Why is iodine added to the specimen?", opts:["To kill the cells","To stain the structures so they are easier to see","To increase magnification","To glue the coverslip down"], correct:1, explain:"Most cells are transparent — a stain like iodine adds colour/contrast so structures are visible."},
+ {q:"What must never be crossed when drawing biological diagrams?", opts:["The cell membrane","Label lines","The nucleus","The scale bar"], correct:1, explain:"Label lines should be drawn with a ruler and must never cross each other."},
+ {q:"What should always be written next to a biological drawing?", opts:["The student's name","The magnification used","The date only","The colour of the stain"], correct:1, explain:"You must always state the magnification used to view the specimen."}
+];
+const quizSec6 = [
+ {q:"Which order is correct, from largest to smallest?", opts:["Gene → DNA → Chromosome → Nucleus → Cell","Cell → Nucleus → Chromosome → DNA → Gene","DNA → Gene → Chromosome → Cell → Nucleus","Chromosome → Cell → Gene → DNA → Nucleus"], correct:1, explain:"Cell → Nucleus → Chromosome → DNA → Gene is the correct hierarchy."},
+ {q:"How many chromosomes are in a normal human body cell?", opts:["23","46","92","12"], correct:1, explain:"Human body cells have 46 chromosomes, arranged in 23 pairs."},
+ {q:"What does a gene code for?", opts:["An entire chromosome","A protein / characteristic","A whole organism","A cell membrane"], correct:1, explain:"A gene is a section of DNA that codes for a specific protein, controlling a characteristic."}
+];
+const quizSec7 = [
+ {q:"What happens during cytokinesis?", opts:["DNA is copied","The nucleus divides","The cytoplasm and cell membrane divide","Chromosomes pair up"], correct:2, explain:"Cytokinesis is the division of the cytoplasm and cell membrane, forming two separate cells."},
+ {q:"Mitosis produces...", opts:["Four different daughter cells","Two genetically identical daughter cells","One large cell","Two cells with half the DNA"], correct:1, explain:"Mitosis produces two genetically identical daughter cells."},
+ {q:"During which stage does DNA replication happen?", opts:["Mitosis","Cytokinesis","Growth / interphase","None of these"], correct:2, explain:"DNA is copied during the growth (interphase) stage, before mitosis begins."}
+];
+const quizSec8 = [
+ {q:"Diffusion is...", opts:["the net movement of particles from low to high concentration","the net movement of particles from high to low concentration","always active and needs energy","only for water"], correct:1, explain:"Diffusion is passive movement down a concentration gradient (high → low)."},
+ {q:"Which factor does NOT increase the rate of diffusion?", opts:["Higher temperature","Larger surface area","Bigger concentration gradient","Thicker membrane"], correct:3, explain:"A thicker membrane increases the diffusion distance, which slows diffusion down."},
+ {q:"Name a waste substance that diffuses OUT of animal cells.", opts:["Oxygen","Glucose","Carbon dioxide","Water only"], correct:2, explain:"Carbon dioxide (and urea) are waste products removed by diffusion."}
+];
+const quizSec9 = [
+ {q:"As an organism gets bigger, its SA:V ratio...", opts:["increases","decreases","stays the same","doubles"], correct:1, explain:"Volume increases faster than surface area as size increases, so SA:V falls."},
+ {q:"Why can small organisms rely on diffusion alone for gas exchange?", opts:["They have a large SA:V ratio, so diffusion distance is short","They don't need oxygen","They have a circulatory system","They have thick skin"], correct:0, explain:"A large SA:V ratio means every part of a small organism is close to the surface."}
+];
+const quizSec10 = [
+ {q:"Osmosis is specifically the movement of...", opts:["glucose","water","oxygen","proteins"], correct:1, explain:"Osmosis only describes the movement of water through a partially permeable membrane."},
+ {q:"What happens to a plant cell in a concentrated solution?", opts:["It bursts","It becomes plasmolysed","It becomes turgid","Nothing changes"], correct:1, explain:"Water leaves the cell, the vacuole shrinks and the membrane pulls away from the wall — plasmolysis."},
+ {q:"Why don't plant cells burst in a dilute solution?", opts:["They have no membrane","Their strong, elastic cell wall resists the pressure","They have no vacuole","Osmosis doesn't affect plants"], correct:1, explain:"The cellulose cell wall pushes back on the swelling contents, so the cell becomes turgid instead of bursting."}
+];
+const quizSec11 = [
+ {q:"Why is the skin removed from a potato cylinder before the experiment?", opts:["It looks nicer","It is impermeable and would affect the results","It weighs too much","It changes colour"], correct:1, explain:"The waterproof skin would stop water moving in/out properly, affecting the results."},
+ {q:"% change in mass = ?", opts:["final mass ÷ initial mass","(final − initial) ÷ initial × 100","initial − final","final × initial"], correct:1, explain:"% change = (change in mass ÷ initial mass) × 100."}
+];
+const quizSec12 = [
+ {q:"Active transport requires energy from...", opts:["Photosynthesis","Respiration","Osmosis","Diffusion"], correct:1, explain:"Energy for active transport comes from respiration in the mitochondria."},
+ {q:"Root hair cells have many mitochondria because...", opts:["they need lots of energy for active transport of mineral ions","they photosynthesise","they store water","they are dividing rapidly"], correct:0, explain:"Active transport of mineral ions against the concentration gradient needs a constant energy supply."}
+];
+
+/* Sorting activity data */
+const sortEukProItems = [
+ {text:"Has a nucleus containing linear DNA", correct:"euk"},
+ {text:"DNA is a single circular loop, free in the cytoplasm", correct:"pro"},
+ {text:"May contain small circular plasmids", correct:"pro"},
+ {text:"Has ribosomes, cytoplasm and a cell membrane", correct:"both"},
+ {text:"Typically much larger in size (10–100 μm)", correct:"euk"},
+ {text:"Some have a flagellum to help them swim", correct:"pro"},
+ {text:"Plant cells of this type have a cellulose cell wall", correct:"euk"},
+ {text:"Some have a protective slime capsule", correct:"pro"},
+];
+const sortEukProBuckets = [{key:"euk",label:"Eukaryotic"},{key:"pro",label:"Prokaryotic"},{key:"both",label:"Both"}];
+
+const sortMicroscopeItems = [
+ {text:"Uses a beam of light", correct:"light"},
+ {text:"Uses a beam of electrons", correct:"electron"},
+ {text:"Can be used to view living specimens", correct:"light"},
+ {text:"Has much higher magnification and resolution", correct:"electron"},
+ {text:"Cheap and easy to use in a school lab", correct:"light"},
+ {text:"Can resolve ribosomes and detail inside mitochondria", correct:"electron"},
+ {text:"Magnifies a specimen so it can be studied", correct:"both"},
+ {text:"Images often appear only in black, white and grey", correct:"electron"},
+];
+const sortMicroscopeBuckets = [{key:"light",label:"Light microscope"},{key:"electron",label:"Electron microscope"},{key:"both",label:"Both"}];
+
+const misconceptionItems = [
+ {text:"Diffusion requires energy from respiration.", correct:"false", explain:"Diffusion is a passive process — it does NOT need energy."},
+ {text:"Diffusion is the net movement of particles from low to high concentration.", correct:"false", explain:"It's the opposite — high to low concentration."},
+ {text:"A steeper concentration gradient increases the rate of diffusion.", correct:"true", explain:"A bigger difference in concentration speeds up net movement."},
+ {text:"Diffusion only happens in liquids, not gases.", correct:"false", explain:"Diffusion happens in both liquids and gases."},
+ {text:"Increasing temperature increases the rate of diffusion.", correct:"true", explain:"More kinetic energy means particles move (and diffuse) faster."},
+];
+const misconceptionBuckets = [{key:"true",label:"True"},{key:"false",label:"False"}];
+
+const compareTransportItems = [
+ {text:"Movement of water down a water concentration gradient", correct:"O"},
+ {text:"Requires energy from respiration", correct:"AT"},
+ {text:"Movement of any small particle down a concentration gradient — no special membrane required", correct:"D"},
+ {text:"Moves substances against the concentration gradient", correct:"AT"},
+ {text:"Needs a partially permeable membrane", correct:"O"},
+ {text:"Used by root hair cells to absorb mineral ions from dilute soil water", correct:"AT"},
+ {text:"Oxygen moving from the air in the alveoli into the blood", correct:"D"},
+ {text:"Water moving into a plant root hair cell from the soil", correct:"O"},
+];
+const compareTransportBuckets = [{key:"D",label:"Diffusion"},{key:"O",label:"Osmosis"},{key:"AT",label:"Active transport"}];
+
+/* Order activities */
+const orderMicroscopySteps = [
+ "Put a drop of water on the microscope slide",
+ "Peel off a thin layer of tissue and place it on the slide",
+ "Add drops of iodine stain",
+ "Lower the coverslip carefully using a mounted needle",
+ "Place the slide on the stage and select the lowest-power objective lens",
+ "Use the coarse focus knob to bring the specimen roughly into view",
+ "Use the fine focus knob to sharpen the image",
+ "Make a clear, labelled scientific drawing, stating the magnification used"
+];
+const orderHierarchySteps = ["Cell","Nucleus","Chromosome","DNA","Gene"];
+const orderCellCycleSteps = [
+ "Growth (interphase) — DNA and organelles are copied, the cell grows",
+ "Mitosis — chromosomes are separated, the nucleus divides",
+ "Cytokinesis — the cytoplasm and cell membrane divide, forming two daughter cells"
+];
+
+/* Calculation practice data */
+const magPracticeQ = [
+ {q:"An object is 400 mm long. Its image is 8000 mm long. Calculate the magnification.", answer:20, unit:"×", explain:"M = I ÷ A = 8000 ÷ 400 = ×20."},
+ {q:"An object is 0.005 mm long. Its image is 20 mm long. Calculate the magnification.", answer:4000, unit:"×", explain:"M = 20 ÷ 0.005 = ×4000."},
+ {q:"A grain of sand looks 2.5 cm long in a photo, but is actually 0.25 mm long. Calculate the magnification. (Convert cm to mm first!)", answer:100, unit:"×", explain:"2.5 cm = 25 mm. M = 25 ÷ 0.25 = ×100."},
+ {q:"An object looks 24 mm long under ×10 magnification. Calculate the actual size in mm.", answer:2.4, unit:"mm", explain:"A = I ÷ M = 24 ÷ 10 = 2.4 mm."},
+ {q:"An object looks 0.1 m long under ×500 magnification. Calculate the actual size in mm. (Convert m to mm first!)", answer:0.2, unit:"mm", explain:"0.1 m = 100 mm. A = 100 ÷ 500 = 0.2 mm."},
+ {q:"Under ×400 magnification, a shrimp looks 1.8 cm long. Calculate its actual length in mm.", answer:0.045, tolerance:0.003, unit:"mm", explain:"1.8 cm = 18 mm. A = 18 ÷ 400 = 0.045 mm."},
+ {q:"An object 4.5 mm wide is viewed under ×600 magnification. Calculate the image width in mm.", answer:2700, unit:"mm", explain:"I = A × M = 4.5 × 600 = 2700 mm."},
+ {q:"CHALLENGE: A diagram of a red blood cell has a magnification of ×5000. The image is 7 mm long. Calculate the actual size in nanometres (nm).", answer:1400, tolerance:20, unit:"nm", explain:"A = 7 ÷ 5000 = 0.0014 mm = 1.4 μm = 1400 nm."},
+];
+const savPracticeQ = [
+ {q:"A cube-shaped cell has a side length of 3 cm. Calculate its surface area.", answer:54, unit:"cm²", explain:"SA = 6 × side² = 6 × 3² = 54 cm²."},
+ {q:"Calculate the volume of the same cube (side length 3 cm).", answer:27, unit:"cm³", explain:"V = side³ = 3³ = 27 cm³."},
+ {q:"A cube has a side length of 4 cm. Calculate its SA:V ratio, giving your answer as a number (SA ÷ V).", answer:1.5, tolerance:0.05, unit:": 1", explain:"SA = 6×16 = 96 cm². V = 64 cm³. Ratio = 96 ÷ 64 = 1.5 : 1."},
+ {q:"A cube has a side length of 5 cm. Calculate its SA:V ratio (SA ÷ V).", answer:1.2, tolerance:0.05, unit:": 1", explain:"SA = 6×25 = 150 cm². V = 125 cm³. Ratio = 150 ÷ 125 = 1.2 : 1. Notice it's smaller than for the 4 cm cube — SA:V falls as size increases."},
+];
+const pcPracticeQ = [
+ {q:"Initial mass = 10.0 g, final mass = 13.0 g. Calculate the percentage change in mass.", answer:30, unit:"%", explain:"(13.0 − 10.0) ÷ 10.0 × 100 = +30%."},
+ {q:"Initial mass = 10.0 g, final mass = 9.0 g. Calculate the percentage change in mass.", answer:-10, unit:"%", explain:"(9.0 − 10.0) ÷ 10.0 × 100 = −10%."},
+ {q:"Initial mass = 10.6 g, final mass = 12.2 g. Calculate the percentage change in mass (1 d.p.)", answer:15.1, tolerance:0.3, unit:"%", explain:"(12.2 − 10.6) ÷ 10.6 × 100 = +15.1%."},
+ {q:"Initial mass = 10.1 g, final mass = 7.9 g. Calculate the percentage change in mass (1 d.p.)", answer:-21.8, tolerance:0.3, unit:"%", explain:"(7.9 − 10.1) ÷ 10.1 × 100 = −21.8%."},
+];
+const cellCycleCalcQ = [
+ {q:"A cell cycle lasts 2 hours (120 minutes) in total. The growth stage lasts 45 minutes. Calculate the combined time for mitosis and cytokinesis, in minutes.", answer:75, unit:"minutes", explain:"120 − 45 = 75 minutes."},
+ {q:"An onion root tip cell cycle lasts 16 hours. In one field of view, 36 cells were counted: 20 non-dividing, 9 in growth, 4 in mitosis, 3 in cytokinesis. Estimate the time spent in mitosis, in minutes (to 2 s.f.). Use: time in stage = (cells in that stage ÷ total cells counted) × total cycle time.", answer:107, tolerance:6, unit:"minutes", explain:"(4 ÷ 36) × 16 hours = 1.78 hours = 107 minutes (2 s.f. ≈ 110 min)."},
+];
+</script>
+<script>
+/* =====================================================================
+   FINAL 25-QUESTION ASSESSMENT
+===================================================================== */
+const CATEGORY_LABELS = {
+  cells:"Cells & Organisation",
+  micro:"Microscopy & Magnification",
+  dna:"DNA & Cell Division",
+  transport:"Transport Across Membranes"
+};
+const finalQuestions = [
+ {cat:"cells", q:"Which organelle controls the activities of the cell?", opts:["Mitochondria","Nucleus","Ribosome","Cytoplasm"], correct:1, explain:"The nucleus contains the DNA and controls the cell's activities."},
+ {cat:"cells", q:"Which THREE structures are found in a plant cell but NOT an animal cell?", opts:["Nucleus, cytoplasm, membrane","Cell wall, chloroplast, permanent vacuole","Mitochondria, ribosome, nucleus","Cell wall, mitochondria, nucleus"], correct:1, explain:"These three organelles are unique to plant cells."},
+ {cat:"cells", q:"What is the function of ribosomes?", opts:["Aerobic respiration","Protein synthesis","Photosynthesis","Controls entry/exit of substances"], correct:1, explain:"Ribosomes are the site of protein synthesis."},
+ {cat:"cells", q:"Which of these is TRUE of a prokaryotic cell?", opts:["DNA is found in a nucleus","DNA is a single circular loop, free in the cytoplasm","It contains mitochondria","It contains chloroplasts"], correct:1, explain:"Prokaryotes have no nucleus — their DNA is a circular loop in the cytoplasm."},
+ {cat:"cells", q:"What is a plasmid?", opts:["A type of ribosome","A small circular ring of extra DNA in some bacteria","The main chromosome of a bacterium","A protein in the cell wall"], correct:1, explain:"Plasmids are small extra loops of DNA carrying useful genes, found in some bacteria."},
+ {cat:"micro", q:"Magnification = ?", opts:["Actual size ÷ image size","Image size ÷ actual size","Image size × actual size","Actual size × image size"], correct:1, explain:"Magnification = image size ÷ actual size."},
+ {cat:"micro", q:"An object is 2 mm long. Its image is 800 mm long. What is the magnification?", opts:["×4","×40","×400","×1600"], correct:2, explain:"M = 800 ÷ 2 = ×400."},
+ {cat:"micro", q:"How many micrometres (μm) are there in 3 mm?", opts:["30","300","3000","30000"], correct:2, explain:"1 mm = 1000 μm, so 3 mm = 3000 μm."},
+ {cat:"micro", q:"Which type of microscope has the higher magnification and resolution?", opts:["Light microscope","Electron microscope","Both are equal","Neither"], correct:1, explain:"Electron microscopes have much higher magnification and resolution than light microscopes."},
+ {cat:"micro", q:"Why must a specimen viewed with a light microscope usually be stained?", opts:["To kill the specimen","Most cells are transparent, so a stain gives contrast/colour to see structures","To increase magnification","To increase resolution"], correct:1, explain:"Staining makes otherwise transparent cell structures visible."},
+ {cat:"micro", q:"Which objective lens should be selected FIRST when viewing a new slide?", opts:["Highest power","Lowest power","Any lens","×100"], correct:1, explain:"Lowest power gives the widest field of view, making the specimen easier to find."},
+ {cat:"micro", q:"Why should the coarse focus knob never be used at high power?", opts:["It has no effect at high power","It could move the stage too far and smash the slide against the lens","It only works at high power","It changes the magnification"], correct:1, explain:"At high power the objective lens is very close to the slide — large stage movements can break it."},
+ {cat:"dna", q:"How many chromosomes are in a normal human body cell?", opts:["23","46","21","92"], correct:1, explain:"Human body cells contain 46 chromosomes (23 pairs)."},
+ {cat:"dna", q:"What is a gene?", opts:["A whole chromosome","A short section of DNA that codes for a protein/characteristic","The nucleus of a cell","A type of protein"], correct:1, explain:"A gene is a section of DNA coding for one protein/characteristic."},
+ {cat:"dna", q:"What is produced by mitosis?", opts:["Four genetically different cells","Two genetically identical daughter cells","One cell with double the DNA","Two cells with half the DNA"], correct:1, explain:"Mitosis produces two genetically identical daughter cells."},
+ {cat:"dna", q:"A cell cycle takes 24 hours. The growth stage takes 20 hours. How many hours do mitosis and cytokinesis take together?", opts:["2","4","6","20"], correct:1, explain:"24 − 20 = 4 hours."},
+ {cat:"transport", q:"Diffusion is the net movement of particles from...", opts:["Low to high concentration, needing energy","High to low concentration, no energy needed","Low to high concentration, no energy needed","High to low concentration, needing energy"], correct:1, explain:"Diffusion is passive movement down a concentration gradient (high → low)."},
+ {cat:"transport", q:"Which of these increases the rate of diffusion across an exchange surface?", opts:["Making the membrane thicker","Decreasing the surface area","Increasing the temperature","Reducing the blood supply"], correct:2, explain:"Higher temperature gives particles more kinetic energy, speeding up diffusion."},
+ {cat:"transport", q:"As a cell gets bigger, its surface area to volume ratio...", opts:["Increases","Decreases","Stays the same","Becomes negative"], correct:1, explain:"Volume grows faster than surface area, so SA:V ratio falls as size increases."},
+ {cat:"transport", q:"A cube-shaped cell has a side length of 2 cm. What is its surface area?", opts:["8 cm²","12 cm²","24 cm²","16 cm²"], correct:2, explain:"SA = 6 × 2² = 24 cm²."},
+ {cat:"transport", q:"Osmosis is the movement of...", opts:["Any solute through any membrane","Water through a partially permeable membrane, high to low water concentration","Glucose against a concentration gradient","Water using energy from respiration"], correct:1, explain:"Osmosis is specifically water movement through a partially permeable membrane."},
+ {cat:"transport", q:"What happens to an animal cell placed in a concentrated sugar solution?", opts:["It swells and bursts","It stays the same size","It shrinks / crenates as water leaves","It grows a cell wall"], correct:2, explain:"Water leaves the cell by osmosis, causing it to shrink (crenate)."},
+ {cat:"transport", q:"A potato cylinder has an initial mass of 8.0 g and a final mass of 7.2 g. Calculate the percentage change in mass.", opts:["−8%","−10%","+10%","−80%"], correct:1, explain:"(7.2 − 8.0) ÷ 8.0 × 100 = −10%."},
+ {cat:"transport", q:"On a graph of % change in mass against solution concentration, the point where the line crosses the x-axis (0% change) shows...", opts:["The maximum concentration tested","The concentration that is isotonic with the tissue","There was an experimental error","The tissue contains no water"], correct:1, explain:"At 0% change there is no net water movement — the external solution matches the tissue's own concentration (isotonic)."},
+ {cat:"transport", q:"Active transport differs from diffusion and osmosis because it...", opts:["Moves particles down a concentration gradient without energy","Moves particles against a concentration gradient using energy from respiration","Only moves water","Only happens in bacteria"], correct:1, explain:"Active transport moves substances against the gradient, and needs energy from respiration."},
+];
+</script>
+<script>
+/* =====================================================================
+   NAVIGATION & PROGRESS
+===================================================================== */
+let visited = new Set();
+try{ const saved = JSON.parse(localStorage.getItem('cellbio_visited')||'[]'); visited = new Set(saved); }catch(e){}
+
+function saveVisited(){
+  try{ localStorage.setItem('cellbio_visited', JSON.stringify([...visited])); }catch(e){}
+}
+
+function updateProgressUI(){
+  const total = SECTION_META.length;
+  const done = SECTION_META.filter(s=>visited.has(s.id)).length;
+  const pct = Math.round((done/total)*100);
+  const pill = document.getElementById('progressPill');
+  if(pill) pill.textContent = `Progress: ${pct}%`;
+  const bar = document.getElementById('homeProgressBar');
+  if(bar) bar.style.width = pct+'%';
+  const txt = document.getElementById('homeProgressText');
+  if(txt) txt.textContent = `${done} of ${total} sections visited`;
+  SECTION_META.forEach(s=>{
+    const navBtn = document.querySelector(`.navbtn[data-target="${s.id}"]`);
+    if(navBtn) navBtn.classList.toggle('done', visited.has(s.id));
+    const dashCard = document.getElementById('dash-'+s.id);
+    if(dashCard) dashCard.classList.toggle('done', visited.has(s.id));
+  });
+}
+
+function goTo(targetId){
+  document.querySelectorAll('.topic, .panel').forEach(el=>el.classList.remove('active'));
+  const target = document.getElementById(targetId);
+  if(target) target.classList.add('active');
+  document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active', b.dataset.target===targetId));
+  if(SECTION_META.some(s=>s.id===targetId)){
+    visited.add(targetId); saveVisited(); updateProgressUI();
+  }
+  document.getElementById('sidebar').classList.remove('open');
+  window.scrollTo(0,0);
+  const meta = SECTION_META.find(s=>s.id===targetId);
+  document.getElementById('topTitle').textContent = meta ? meta.title.replace(/&amp;/g,'&') :
+    (targetId==='home' ? 'Cell Biology Learning Hub' : targetId==='glossary' ? 'Glossary' : targetId==='final' ? 'End-of-Topic Challenge' : 'Cell Biology Learning Hub');
+}
+
+document.querySelectorAll('.navbtn').forEach(btn=>{
+  btn.addEventListener('click', ()=>goTo(btn.dataset.target));
+});
+document.getElementById('menuBtn').addEventListener('click', ()=>{
+  document.getElementById('sidebar').classList.toggle('open');
+});
+
+/* Language toggle */
+const langBtn = document.getElementById('langToggle');
+let showSpanish = true;
+try{ showSpanish = localStorage.getItem('cellbio_showSpanish') !== 'off'; }catch(e){}
+function applyLangState(){
+  document.body.classList.toggle('hide-es', !showSpanish);
+  langBtn.classList.toggle('off', !showSpanish);
+  langBtn.textContent = showSpanish ? '🇬🇧 English  +  🇪🇸 Spanish' : '🇬🇧 English only (Spanish hidden)';
+}
+langBtn.addEventListener('click', ()=>{
+  showSpanish = !showSpanish;
+  try{ localStorage.setItem('cellbio_showSpanish', showSpanish?'on':'off'); }catch(e){}
+  applyLangState();
+});
+applyLangState();
+
+/* Dashboard */
+const dashGrid = document.getElementById('dashGrid');
+SECTION_META.forEach((s,i)=>{
+  const card=document.createElement('div');
+  card.className='dash-card'; card.id='dash-'+s.id;
+  card.innerHTML=`<span class="check">✔ Visited</span><div class="icon">${s.icon}</div><h4>${i+1}. ${s.title}</h4><p>${s.desc}</p>`;
+  card.onclick=()=>goTo(s.id);
+  dashGrid.appendChild(card);
+});
+const glossCard=document.createElement('div'); glossCard.className='dash-card';
+glossCard.innerHTML=`<div class="icon">📖</div><h4>Glossary</h4><p>Search &amp; flashcards EN↔ES</p>`;
+glossCard.onclick=()=>goTo('glossary'); dashGrid.appendChild(glossCard);
+const finalCard=document.createElement('div'); finalCard.className='dash-card';
+finalCard.innerHTML=`<div class="icon">🏆</div><h4>End-of-Topic Challenge</h4><p>25-question final assessment</p>`;
+finalCard.onclick=()=>goTo('final'); dashGrid.appendChild(finalCard);
+
+updateProgressUI();
+
+/* =====================================================================
+   RENDER ALL QUIZZES / ACTIVITIES
+===================================================================== */
+renderMCQList('quiz-sec1', quizSec1);
+renderMCQList('quiz-sec2', quizSec2);
+renderMCQList('quiz-sec4', quizSec4);
+renderMCQList('quiz-sec5', quizSec5);
+renderMCQList('quiz-sec6', quizSec6);
+renderMCQList('quiz-sec7', quizSec7);
+renderMCQList('quiz-sec8', quizSec8);
+renderMCQList('quiz-sec9', quizSec9);
+renderMCQList('quiz-sec10', quizSec10);
+renderMCQList('quiz-sec11', quizSec11);
+renderMCQList('quiz-sec12', quizSec12);
+
+renderSortActivity('sortEukPro', sortEukProItems, sortEukProBuckets);
+renderSortActivity('sortMicroscope', sortMicroscopeItems, sortMicroscopeBuckets);
+renderSortActivity('misconceptionDiffusion', misconceptionItems, misconceptionBuckets);
+renderSortActivity('compareTransport', compareTransportItems, compareTransportBuckets);
+
+renderOrder('orderMicroscopy', orderMicroscopySteps);
+renderOrder('orderHierarchy', orderHierarchySteps);
+renderOrder('orderCellCycle', orderCellCycleSteps);
+
+renderCalcPractice('magPractice', magPracticeQ);
+renderCalcPractice('savPractice', savPracticeQ);
+renderCalcPractice('pcPractice', pcPracticeQ);
+renderCalcPractice('cellCycleCalc', cellCycleCalcQ);
+
+renderMCQList('graphInterpret', [
+ {q:"A student tests four sugar concentrations. The line of best fit crosses the x-axis at 0.3 mol/dm³. What can they conclude?", opts:["The tissue's own concentration is about 0.3 mol/dm³ (isotonic point)","The experiment failed","0.3 mol/dm³ is the most concentrated solution possible","There is no relationship between mass change and concentration"], correct:0, explain:"Zero % change means no net osmosis — the external solution matches the tissue's concentration at that point."},
+ {q:"Why do we calculate % change in mass rather than just the change in mass (in g)?", opts:["It's easier to plot on a graph","It allows fair comparison between cylinders that didn't start with exactly the same mass","% is always a bigger number","It removes the need for a control variable"], correct:1, explain:"Percentage change accounts for differences in starting mass, allowing a fair comparison."},
+]);
+
+/* =====================================================================
+   LABEL-THE-CELL ACTIVITY
+===================================================================== */
+function renderLabelActivity(rowsId, checkId, scoreId, correctIdxArr){
+  const rows=document.getElementById(rowsId);
+  rows.innerHTML = correctIdxArr.map((_,i)=>`
+    <div class="hotspot-row"><span class="tag">${i+1}</span>
+      <select data-i="${i}">
+        <option value="">Choose the organelle…</option>
+        ${OPTS8.map((o,oi)=>`<option value="${oi}">${o}</option>`).join('')}
+      </select>
+    </div>`).join('');
+  document.getElementById(checkId).onclick=()=>{
+    let score=0;
+    rows.querySelectorAll('select').forEach((sel,i)=>{
+      const val=sel.value;
+      const ok = val!=='' && parseInt(val)===correctIdxArr[i];
+      sel.style.borderColor = val==='' ? 'var(--border)' : (ok? 'var(--green)':'var(--red)');
+      sel.style.background = val==='' ? '' : (ok? '#e9f8ee':'#fdecea');
+      if(ok) score++;
+    });
+    document.getElementById(scoreId).textContent = `Score: ${score}/${correctIdxArr.length}`;
+    document.getElementById(scoreId).style.color = score===correctIdxArr.length ? 'var(--green)' : 'var(--navy)';
+  };
+}
+renderLabelActivity('animalLabelRows','checkAnimalLabels','animalLabelScore', ANIMAL_LABELS);
+renderLabelActivity('plantLabelRows','checkPlantLabels','plantLabelScore', PLANT_LABELS);
+
+/* =====================================================================
+   MAGNIFICATION TUTOR
+===================================================================== */
+(function(){
+  const box = document.getElementById('magTutor');
+  box.innerHTML = `
+    <p><b>Worked example:</b> A student draws an onion cell. The drawing is 40 mm wide. The actual width of the cell is 0.05 mm. Calculate the magnification of the drawing.</p>
+    <div id="magSteps"></div>
+    <div style="margin-top:14px;">
+      <label>Your answer for the magnification: </label>
+      <input type="number" id="magTutorInput" style="width:120px;"> ×
+      <button class="btn small" id="magTutorCheck">Check</button>
+    </div>
+    <div class="feedback" id="magTutorFeedback"></div>`;
+  const steps = [
+    ["Step 1 — What is being asked?", "We need to calculate the <b>magnification</b> of the drawing."],
+    ["Step 2 — Identify M, I and A", "Image size (I) = 40 mm. Actual size (A) = 0.05 mm. Magnification (M) = ?"],
+    ["Step 3 — Convert units if necessary", "Both sizes are already in mm, so no conversion is needed here."],
+    ["Step 4 — Choose/rearrange the equation", "Magnification = Image size ÷ Actual size, so M = I ÷ A"],
+    ["Step 5 — Calculate", "M = 40 ÷ 0.05 — work this out and enter your answer below."]
+  ];
+  const stepsDiv = document.getElementById('magSteps');
+  steps.forEach((s,i)=>{
+    const d=document.createElement('div'); d.style.margin='8px 0';
+    d.innerHTML = `<button class="reveal-btn" data-i="${i}">${s[0]}</button><div class="reveal-box" id="magStepBox${i}">${s[1]}</div>`;
+    stepsDiv.appendChild(d);
+  });
+  stepsDiv.querySelectorAll('.reveal-btn').forEach(b=>{
+    b.onclick=()=>{ document.getElementById('magStepBox'+b.dataset.i).classList.toggle('open'); };
+  });
+  document.getElementById('magTutorCheck').onclick=()=>{
+    const val=parseFloat(document.getElementById('magTutorInput').value);
+    const fb=document.getElementById('magTutorFeedback');
+    if(val===800){ fb.className='feedback show good'; fb.textContent='✅ Correct! M = 40 ÷ 0.05 = ×800.'; }
+    else { fb.className='feedback show bad'; fb.textContent='❌ Not quite. M = 40 ÷ 0.05 = ×800.'; }
+  };
+})();
+
+/* =====================================================================
+   SA:V CUBE TOOL
+===================================================================== */
+function drawCube(n){
+  const scale = 6 + n*4;
+  const x=20,y=110;
+  document.getElementById('cubeSvg').innerHTML = `
+   <polygon points="${x},${y} ${x+scale},${y} ${x+scale},${y-scale} ${x},${y-scale}" fill="#bfe3ea" stroke="#0e7c86" stroke-width="2"/>
+   <polygon points="${x},${y-scale} ${x+scale},${y-scale} ${x+scale+16},${y-scale-16} ${x+16},${y-scale-16}" fill="#8fd0da" stroke="#0e7c86" stroke-width="2"/>
+   <polygon points="${x+scale},${y} ${x+scale},${y-scale} ${x+scale+16},${y-scale-16} ${x+scale+16},${y-16}" fill="#5fb8c4" stroke="#0e7c86" stroke-width="2"/>`;
+}
+function updateCube(){
+  const n = parseInt(document.getElementById('cubeSide').value);
+  document.getElementById('cubeSideVal').textContent = n;
+  const sa = 6*n*n, vol = n*n*n, ratio = sa/vol;
+  document.getElementById('cubeSA').textContent = sa;
+  document.getElementById('cubeVol').textContent = vol;
+  document.getElementById('cubeRatio').textContent = ratio.toFixed(2)+' : 1';
+  document.getElementById('cubeRatioBar').style.width = Math.min(100, ratio/6*100)+'%';
+  drawCube(n);
+}
+document.getElementById('cubeSide').addEventListener('input', updateCube);
+updateCube();
+
+/* =====================================================================
+   OSMOSIS TOOL
+===================================================================== */
+function drawOsmosisCell(svgId, walled, state){
+  const svg=document.getElementById(svgId);
+  let r = state==='dilute' ? (walled?58:62) : state==='isotonic' ? 45 : (walled?36:24);
+  let stroke = walled ? '#2f9e5b' : (state==='concentrated' ? '#c8402f' : '#0e7c86');
+  let fill = walled ? '#cfe9f7' : '#fde8e6';
+  let html = '';
+  if(walled) html += `<rect x="8" y="8" width="124" height="124" rx="12" fill="none" stroke="#2f9e5b" stroke-width="4"/>`;
+  html += `<circle cx="70" cy="70" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="3"/>`;
+  svg.innerHTML = html;
+}
+function setOsmosis(state){
+  drawOsmosisCell('osmoAnimal', false, state);
+  drawOsmosisCell('osmoPlant', true, state);
+  const labels = {
+    dilute:["Swells — may burst (lysis)","Turgid (swollen, firm — wall resists pressure)"],
+    isotonic:["No net change","No net change"],
+    concentrated:["Shrinks (crenated)","Plasmolysed — membrane pulls away from wall"]
+  };
+  document.getElementById('osmoAnimalLabel').textContent = labels[state][0];
+  document.getElementById('osmoPlantLabel').textContent = labels[state][1];
+  document.querySelectorAll('[data-osmo]').forEach(b=>b.classList.toggle('btn', b.dataset.osmo===state));
+}
+document.querySelectorAll('[data-osmo]').forEach(b=>{
+  b.addEventListener('click', ()=>setOsmosis(b.dataset.osmo));
+});
+setOsmosis('isotonic');
+
+/* =====================================================================
+   PERCENTAGE CHANGE CALCULATOR
+===================================================================== */
+document.getElementById('pcCalcBtn').addEventListener('click', ()=>{
+  const i = parseFloat(document.getElementById('pcInitial').value);
+  const f = parseFloat(document.getElementById('pcFinal').value);
+  const res = document.getElementById('pcResult');
+  if(isNaN(i) || isNaN(f) || i===0){ res.textContent = 'Please enter both an initial and final mass.'; res.style.color='var(--red)'; return; }
+  const change = f - i;
+  const pct = (change/i)*100;
+  res.style.color = pct>=0 ? 'var(--green)' : 'var(--red)';
+  res.textContent = `Change in mass = ${change.toFixed(2)} g. Percentage change = ${pct>=0?'+':''}${pct.toFixed(1)}%. ${pct>0?'(mass gained — water moved IN)':pct<0?'(mass lost — water moved OUT)':'(no change — isotonic)'}`;
+});
+
+/* =====================================================================
+   DIFFUSION PARTICLE SIMULATION
+===================================================================== */
+let diffParticles = [];
+function initDiffParticles(){
+  diffParticles = [];
+  const concLevel = parseInt(document.getElementById('diffConc').value);
+  const leftFraction = concLevel===1 ? 0.6 : concLevel===2 ? 0.8 : 1.0;
+  const total = 90;
+  const leftCount = Math.round(total*leftFraction);
+  for(let i=0;i<total;i++){
+    const onLeft = i<leftCount;
+    diffParticles.push({
+      x: onLeft ? Math.random()*260+10 : Math.random()*260+330,
+      y: Math.random()*200+10,
+      vx: (Math.random()-0.5)*2,
+      vy: (Math.random()-0.5)*2
+    });
+  }
+}
+function stepDiff(){
+  const canvas = document.getElementById('diffCanvas');
+  if(canvas){
+    const temp = parseInt(document.getElementById('diffTemp').value);
+    const speed = 0.3 + (temp/100)*2.2;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,600,220);
+    ctx.strokeStyle='rgba(15,41,66,0.15)'; ctx.setLineDash([6,6]);
+    ctx.beginPath(); ctx.moveTo(300,0); ctx.lineTo(300,220); ctx.stroke(); ctx.setLineDash([]);
+    diffParticles.forEach(p=>{
+      p.x += p.vx*speed; p.y += p.vy*speed;
+      if(Math.random()<0.04){ p.vx=(Math.random()-0.5)*2; p.vy=(Math.random()-0.5)*2; }
+      if(p.x<4){p.x=4;p.vx=Math.abs(p.vx);} if(p.x>596){p.x=596;p.vx=-Math.abs(p.vx);}
+      if(p.y<4){p.y=4;p.vy=Math.abs(p.vy);} if(p.y>216){p.y=216;p.vy=-Math.abs(p.vy);}
+      ctx.beginPath(); ctx.arc(p.x,p.y,4,0,Math.PI*2); ctx.fillStyle='#0e7c86'; ctx.fill();
+    });
+  }
+  requestAnimationFrame(stepDiff);
+}
+document.getElementById('diffTemp').addEventListener('input', (e)=>{ document.getElementById('diffTempVal').textContent = e.target.value; });
+document.getElementById('diffConc').addEventListener('input', (e)=>{
+  const labels={1:'Low',2:'Medium',3:'High'};
+  document.getElementById('diffConcVal').textContent = labels[e.target.value];
+  initDiffParticles();
+});
+initDiffParticles();
+stepDiff();
+
+/* =====================================================================
+   GLOSSARY
+===================================================================== */
+function renderGlossary(filter){
+  const tbody = document.querySelector('#glossTable tbody');
+  tbody.innerHTML='';
+  const f = (filter||'').toLowerCase();
+  GLOSSARY.filter(([en,es])=> !f || en.toLowerCase().includes(f) || es.toLowerCase().includes(f))
+    .forEach(([en,es])=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML = `<td>${en}</td><td>${es}</td>`;
+      tbody.appendChild(tr);
+    });
+}
+renderGlossary('');
+document.getElementById('glossSearch').addEventListener('input', (e)=>renderGlossary(e.target.value));
+
+/* Flashcards */
+let flashIndex = 0;
+let flashShuffled = [...GLOSSARY];
+function renderFlash(){
+  const [en,es] = flashShuffled[flashIndex];
+  document.getElementById('flashFront').textContent = en;
+  document.getElementById('flashBack').textContent = es;
+  document.getElementById('flashcard').classList.remove('flipped');
+  document.getElementById('flashCount').textContent = `${flashIndex+1} / ${flashShuffled.length}`;
+}
+document.getElementById('flashcard').addEventListener('click', ()=>{
+  document.getElementById('flashcard').classList.toggle('flipped');
+});
+document.getElementById('flashNext').addEventListener('click', ()=>{
+  flashIndex = (flashIndex+1) % flashShuffled.length; renderFlash();
+});
+document.getElementById('flashPrev').addEventListener('click', ()=>{
+  flashIndex = (flashIndex-1+flashShuffled.length) % flashShuffled.length; renderFlash();
+});
+renderFlash();
+
+/* =====================================================================
+   FINAL ASSESSMENT ENGINE
+===================================================================== */
+let finalOrder = [];
+let finalIdx = 0;
+let finalScore = 0;
+let finalCatStats = {};
+
+function startFinalAssessment(){
+  finalOrder = finalQuestions.map((_,i)=>i);
+  finalIdx = 0; finalScore = 0;
+  finalCatStats = {};
+  Object.keys(CATEGORY_LABELS).forEach(k=> finalCatStats[k] = {correct:0,total:0});
+  document.getElementById('finalIntro').classList.add('hidden');
+  document.getElementById('finalResults').innerHTML = '';
+  renderFinalQuestion();
+}
+function renderFinalQuestion(){
+  const area = document.getElementById('finalQuizArea');
+  if(finalIdx >= finalOrder.length){ renderFinalResults(); return; }
+  const q = finalQuestions[finalOrder[finalIdx]];
+  area.innerHTML = `
+    <div class="progressbar-outer"><div class="progressbar-inner" style="width:${(finalIdx/finalOrder.length*100)}%"></div></div>
+    <p style="font-size:.8rem;color:var(--text-light);">Question ${finalIdx+1} of ${finalOrder.length}</p>
+    <div class="quiz-q">
+      <div class="qtext">${q.q}</div>
+      <div class="quiz-opts"></div>
+      <div class="feedback"></div>
+      <button class="btn small hidden" id="finalNextBtn" style="margin-top:10px;">${finalIdx+1===finalOrder.length ? 'See my results' : 'Next question ▶'}</button>
+    </div>`;
+  const optsDiv = area.querySelector('.quiz-opts');
+  const allBtns=[];
+  q.opts.forEach((opt,oi)=>{
+    const b=document.createElement('button'); b.className='quiz-opt'; b.textContent=opt;
+    allBtns.push(b);
+    b.onclick=()=>{
+      allBtns.forEach(x=>x.classList.add('disabled'));
+      const fb=area.querySelector('.feedback');
+      finalCatStats[q.cat].total++;
+      if(oi===q.correct){
+        b.classList.add('correct'); finalScore++; finalCatStats[q.cat].correct++;
+        fb.className='feedback show good'; fb.textContent='✅ Correct! '+q.explain;
+      } else {
+        b.classList.add('incorrect'); allBtns[q.correct].classList.add('correct');
+        fb.className='feedback show bad'; fb.textContent='❌ Not quite — '+q.explain;
+      }
+      document.getElementById('finalNextBtn').classList.remove('hidden');
+    };
+    optsDiv.appendChild(b);
+  });
+  document.getElementById('finalNextBtn').onclick = ()=>{ finalIdx++; renderFinalQuestion(); };
+}
+function renderFinalResults(){
+  document.getElementById('finalQuizArea').innerHTML = '';
+  const pct = Math.round((finalScore/finalQuestions.length)*100);
+  let html = `<div class="card" style="text-align:center;background:var(--navy);color:#fff;">
+    <h2 style="color:#fff;border-color:var(--amber);">Your score: ${finalScore} / ${finalQuestions.length} (${pct}%)</h2>
+  </div><h3>Breakdown by topic area</h3>`;
+  const weak = [];
+  Object.entries(CATEGORY_LABELS).forEach(([key,label])=>{
+    const s = finalCatStats[key];
+    const p = s.total ? Math.round((s.correct/s.total)*100) : 0;
+    if(p < 70) weak.push(label);
+    html += `<div class="breakdown-row"><div class="label">${label}</div><div class="bar-outer"><div class="bar-inner" style="width:${p}%"></div></div><div class="pct">${p}%</div></div>`;
+  });
+  html += `<div class="card" style="background:var(--amber-light);border:none;margin-top:16px;">
+    <b>Recommendation:</b> `;
+  html += weak.length ? `Focus your revision on: <b>${weak.join(', ')}</b>. Go back through those sections, redo the practice activities, and try this challenge again.`
+                       : `Great work — you scored well across every topic area! A quick re-read of the glossary will help keep the key terms fresh.`;
+  html += `</div><button class="btn secondary" id="retryFinal" style="margin-top:14px;">Try again</button>`;
+  document.getElementById('finalResults').innerHTML = html;
+  document.getElementById('retryFinal').onclick = ()=>{
+    document.getElementById('finalIntro').classList.remove('hidden');
+    document.getElementById('finalResults').innerHTML='';
+  };
+}
+document.getElementById('startFinal').addEventListener('click', startFinalAssessment);
+</script>
+</body>
+</html>
